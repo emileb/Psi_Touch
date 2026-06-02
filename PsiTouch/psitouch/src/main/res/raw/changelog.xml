@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog bulletedList="true">
+
+    <changelogversion versionName="3.1" changeDate="25 May 2026">
+        <changelogtext>Updated RealRTCW to 5.4.3</changelogtext>
+        <changelogtext>Updated OpenMOHAA 'dev' version (23/04/2026)</changelogtext>
+        <changelogtext>Added missing Aim Mode to Perfect Dark</changelogtext>
+        <changelogtext>Added Document Provider to provide access to internal files</changelogtext>
+        <changelogtext>Added multitouch for touch look and move pads (to use multiple finger on one side)</changelogtext>
+        <changelogtext>Added option to swap and invert mouse X and Y</changelogtext>
+        <changelogtext>Added option for OpenAL audio backend</changelogtext>
+        <changelogtext>Updated to latest OpenAL</changelogtext>
+        <changelogtext>Improved gamepad axis settings</changelogtext>
+        <changelogtext>Fixed Perfect Dark crash with 32bit APK</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="3.0.1" changeDate="25 February 2026">
+        <changelogtext>Added Perfect Dark (N64)</changelogtext>
+        <changelogtext>Updated RealRTCW to 5.3</changelogtext>
+        <changelogtext>Added OpenMOHAA 'dev' version (24/02/2026)</changelogtext>
+        <changelogtext>Fixed AAudio backend</changelogtext>
+        <changelogtext>Added 'undo' to mod selection</changelogtext>
+        <changelogtext>Fixed icon.png loading for OMOHAA</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="2.0.1" changeDate="09 September 2025">
+        <changelogtext>Fix RealRTCW 5.0</changelogtext>
+        <changelogtext>Fixed gamepad Alt Attack button</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="2.0" changeDate="05 September 2025">
+        <changelogtext>Added Medal of Honor (OMOHAA)</changelogtext>
+        <changelogtext>Added RealRTCW 5.2 (5.0 still available to run)</changelogtext>
+        <changelogtext>Fixed RealRTCW engine settings</changelogtext>
+        <changelogtext>Added option to reduce texture size for RealRTCW (reduce mem usage)</changelogtext>
+        <changelogtext>Added options to full-screen launcher</changelogtext>
+        <changelogtext>New Touch Settings graphics</changelogtext>
+        <changelogtext>Improved Gamepad setup</changelogtext>
+        <changelogtext>Added X/Y sensitivity option for touch screen 'Digital Move' option</changelogtext>
+        <changelogtext>Fixed RealRTCW save game path</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="1.0" changeDate="01 January 2025">
+        <changelogtext>Added RealRTCW</changelogtext>
+        <changelogtext>Weapon wheel transparency now matches main controls</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="1.0 RC1" changeDate="20 December 2023">
+        <changelogtext>Added LZWolf</changelogtext> 
+        <changelogtext>Added gamepad controls</changelogtext>
+        <changelogtext>Updated Blake Stone and fixed floors</changelogtext>
+        <changelogtext>Updated engine icons</changelogtext>
+        <changelogtext>Fixed ROTT crash on save game</changelogtext>
+        <changelogtext>Fixed Export/Import of user files</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.5 beta" changeDate="08 February 2023">
+        <changelogtext>Updated to ECWolf 1.4.1</changelogtext>
+        <changelogtext>ECWOLF: Fixed weapon slots</changelogtext>
+        <changelogtext>ROTT: Fix large memory usage</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.4 beta" changeDate="05 February 2023">
+        <changelogtext>ECWOLF: Updated to 1.4.0</changelogtext>
+        <changelogtext>RTCW: Fixed corrupt graphics on loading</changelogtext>
+        <changelogtext>RTCW: Fixed flares rendering</changelogtext>
+        <changelogtext>RTCW: Added custom resolution</changelogtext>
+        <changelogtext>ROTT: Fixed map button (and others)</changelogtext>
+        <changelogtext>ROTT: Added Fly up/down buttons</changelogtext>
+        <changelogtext>Fixed 'Custom commands' button</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.3 beta" changeDate="08 January 2023">
+        <changelogtext>Added ECWolf</changelogtext>
+        <changelogtext>Updated icons</changelogtext>
+        <changelogtext>ROTT: Default mouse look on</changelogtext>
+        <changelogtext>ROTT: Add option to load maps from ROTT/maps folder</changelogtext>
+        <changelogtext>ROTT: Fixed music</changelogtext>
+        <changelogtext>RTCW: Increase MAX_SCRIPT_EVENTS to 256 and increase POOL memory</changelogtext>
+        <changelogtext>BLAKE: Fixed Software/GL mode selection</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.2 alpha" changeDate="09 October 2022">
+        <changelogtext>rtcw: Fix Weapon Alt, and enabled on by default</changelogtext>
+        <changelogtext>ROTT: Fix joystick move</changelogtext>
+        <changelogtext>ROTT: Fix quick save/load</changelogtext>
+        <changelogtext>ROTT: Fix weapon wheel</changelogtext>
+        <changelogtext>ROTT: Fix secondary path</changelogtext>
+        <changelogtext>ROTT: Fix user_files location</changelogtext>
+        <changelogtext>ROTT: Back button goes back to game</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.1 alpha" changeDate="September 2022">
+        <changelogtext>Fixed binocular button</changelogtext>
+        <changelogtext>Added Kick to RTCW</changelogtext>
+        <changelogtext>Added back reload/sniper mode</changelogtext>
+        <changelogtext>Various fixes to Blake Stone</changelogtext>
+    </changelogversion>
+
+</changelog>

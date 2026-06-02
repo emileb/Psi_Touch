@@ -1,0 +1,14 @@
+# CMake build artifacts (symlinks created at build time into the engine source)
+/Captions
+/Documentation
+/EditorDef
+/ExternalData
+/Fonts
+/Mods
+/Shaders
+/SoundFonts
+/Tests
+/UI_Images
+/UI_Text
+/.cxx
+/build
