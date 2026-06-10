@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../AndroidCore_OpenTouch/ChangeLogLibrary" />
+            <option value="$PROJECT_DIR$/../AndroidCore_OpenTouch/androidcore" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/psitouch" />
+            <option value="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/OpenJK" />
+            <option value="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/TheForceEngine" />
+            <option value="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/fluidsynth" />
+            <option value="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/oboe" />
+            <option value="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/openal-soft" />
+            <option value="$PROJECT_DIR$/../SAFFAL/saffal" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

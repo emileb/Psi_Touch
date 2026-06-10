@@ -46,3 +46,6 @@ project(':fluidsynth').projectDir = new File(settingsDir, "/psitouch/src/main/jn
 
 include ':TheForceEngine'
 project(':TheForceEngine').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Alpha/TheForceEngine")
+
+include ':OpenJK'
+project(':OpenJK').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Alpha/OpenJK")

@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJK;
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsTFE;
 import com.opentouchgaming.androidcore.AboutDialog;
 import com.opentouchgaming.androidcore.AppInfo;
@@ -108,11 +109,41 @@ public class EntryActivity extends FragmentActivity
                                new String[][]{{"touchcontrols", "z", "tfe"}},
                                "",
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
-                               R.drawable.rtcw_icon,
+                               R.drawable.joystick,
                                0,
                                0x004444e0,
                                0,
-                               EngineOptionsTFE.class),};
+                               EngineOptionsTFE.class),
+
+                new GameEngine(GameEngine.Engine.OPENJK,
+                               0,
+                               "OpenJK",
+                               "openjk",
+                               "",
+                               new String[]{"dev"},
+                               new String[][]{{"touchcontrols", "z", "openjk_sp"}},
+                               "",
+                               GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
+                               R.drawable.jk_icon,
+                               0,
+                               0x004444e0,
+                               0,
+                               EngineOptionsOpenJK.class),
+
+                new GameEngine(GameEngine.Engine.OPENJO,
+                               0,
+                               "OpenJO",
+                               "openjo",
+                               "",
+                               new String[]{"dev"},
+                               new String[][]{{"touchcontrols", "z", "openjo_sp"}},
+                               "",
+                               GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
+                               R.drawable.jo_icon,
+                               0,
+                               0x004444e0,
+                               0,
+                               EngineOptionsOpenJK.class),};
 
         List<StorageConfigDialog.StorageExamples> examples = new ArrayList<>();
         examples.add(new StorageConfigDialog.StorageExamples("User files", "(config, saves etc):", StorageConfigDialog.PathLocation.PRIM, "/user_files"));
@@ -132,7 +163,7 @@ public class EntryActivity extends FragmentActivity
         AppInfo.scopedTutorial = scopedTutorial;
 
         AppInfo.userFilesEntries = new UserFilesDialog.UserFileEntryDescription[]{
-                new UserFilesDialog.UserFileEntryDescription("TheForceEngine", "dev", R.drawable.rtcw_icon, "iortcw"),
+                new UserFilesDialog.UserFileEntryDescription("TheForceEngine", "dev", R.drawable.joystick, "iortcw"),
 
                 new UserFilesDialog.UserFileEntryDescription("Mod setups", "", R.drawable.ic_baseline_file_copy, "loadouts"),
                 new UserFilesDialog.UserFileEntryDescription("Gamepad setups", "", R.drawable.ic_baseline_file_copy, "gamepad"),

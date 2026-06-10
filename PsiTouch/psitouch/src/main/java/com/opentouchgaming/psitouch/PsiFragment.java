@@ -28,6 +28,10 @@ public class PsiFragment extends MainFragment
 
     TFELauncher tfeLauncher;
 
+    OpenJKLauncher openjkLauncher;
+
+    OpenJOLauncher openjoLauncher;
+
     public PsiFragment()
     {
         super();
@@ -42,6 +46,10 @@ public class PsiFragment extends MainFragment
         noLicCheck = true;
 
         tfeLauncher = new TFELauncher();
+
+        openjkLauncher = new OpenJKLauncher();
+
+        openjoLauncher = new OpenJOLauncher();
     }
 
     public void setLauncher()
@@ -50,6 +58,12 @@ public class PsiFragment extends MainFragment
         {
             case TFE:
                 launcher = tfeLauncher;
+                break;
+            case OPENJK:
+                launcher = openjkLauncher;
+                break;
+            case OPENJO:
+                launcher = openjoLauncher;
                 break;
         }
     }

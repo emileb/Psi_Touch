@@ -28,7 +28,7 @@ class TFELauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "main", 0, WEAPON_WHEEL_NBR,
-                arrayOf(""), R.drawable.file_folder, "tfw",
+                arrayOf(""), R.drawable.file_folder, "tfe",
                 "Copy pak0.pk3, sp_pak1.pk3, sp_pak2.pk3, sp_pak3.pk3, sp_pk4.pk3 to: ", "Put your RTCW pk3 files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))
@@ -43,7 +43,7 @@ class TFELauncher : GameLauncherInterface
                 {
                     val pathInfo = f.absolutePath
                     val fileInfo = Utils.filesInfoString(pathInfo, null, 3)
-                    val mod = SubGame(SUB_DIR + dirName, dirName, dirName, pathName, 0, R.drawable.rtcw_icon, pathInfo, fileInfo, WEAPON_WHEEL_NBR)
+                    val mod = SubGame(SUB_DIR + dirName, dirName, dirName, pathName, 0, R.drawable.joystick, pathInfo, fileInfo, WEAPON_WHEEL_NBR)
                     availableSubGames.add(mod)
                 }
             }
@@ -57,7 +57,6 @@ class TFELauncher : GameLauncherInterface
 
     override fun getSecondaryDirectory(): String?
     {
-
         val secFolder = AppInfo.getAppSecDirectory()
 
         return if (secFolder != null) "$secFolder/$SUB_DIR" else null
