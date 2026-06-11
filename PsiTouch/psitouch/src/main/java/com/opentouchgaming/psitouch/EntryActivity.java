@@ -143,6 +143,21 @@ public class EntryActivity extends FragmentActivity
                                0,
                                0x004444e0,
                                0,
+                               EngineOptionsOpenJK.class),
+
+                new GameEngine(GameEngine.Engine.OPENJK_MP,
+                               0,
+                               "OpenJK MP",
+                               "openjk_mp",
+                               "",
+                               new String[]{"dev"},
+                               new String[][]{{"touchcontrols", "z", "openjk"}},
+                               "",
+                               GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
+                               R.drawable.jk_icon,
+                               0,
+                               0x004444e0,
+                               0,
                                EngineOptionsOpenJK.class),};
 
         List<StorageConfigDialog.StorageExamples> examples = new ArrayList<>();

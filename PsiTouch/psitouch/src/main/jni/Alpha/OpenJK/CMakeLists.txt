@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)
+ cmake_minimum_required(VERSION 4.1)
 project(openjk_builder)
 
 set(SDL2_ANDROID_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../../SDL2_OpenTouch/SDL2-2.0.12/include")

@@ -30,6 +30,8 @@ public class PsiFragment extends MainFragment
 
     OpenJKLauncher openjkLauncher;
 
+    OpenJKMPLauncher openjkmpLauncher;
+
     OpenJOLauncher openjoLauncher;
 
     public PsiFragment()
@@ -49,6 +51,8 @@ public class PsiFragment extends MainFragment
 
         openjkLauncher = new OpenJKLauncher();
 
+        openjkmpLauncher = new OpenJKMPLauncher();
+
         openjoLauncher = new OpenJOLauncher();
     }
 
@@ -61,6 +65,9 @@ public class PsiFragment extends MainFragment
                 break;
             case OPENJK:
                 launcher = openjkLauncher;
+                break;
+            case OPENJK_MP:
+                launcher = openjkmpLauncher;
                 break;
             case OPENJO:
                 launcher = openjoLauncher;

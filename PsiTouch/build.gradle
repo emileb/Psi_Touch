@@ -22,7 +22,11 @@ buildscript {
             CMAKE_SHADERLINKER_FLAGS :"-flto=full -fuse-ld=lld -Wl,--build-id -Wl,-z,max-page-size=16384",
             ndk_build_platform : "APP_PLATFORM=android-${versions.native_android_platform_version}"
     ]
-    ext.abi_filters = ['armeabi-v7a','arm64-v8a']
+    // Defaults to both shipping ABIs. Override for faster local iteration with
+    // e.g. -PabiOverride=arm64-v8a (comma-separated for multiple).
+    ext.abi_filters = project.hasProperty('abiOverride') ?
+            project.property('abiOverride').split(',').collect { it.trim() } :
+            ['armeabi-v7a','arm64-v8a']
     ext.rootDir = rootProject.rootDir
     repositories {
         google()
