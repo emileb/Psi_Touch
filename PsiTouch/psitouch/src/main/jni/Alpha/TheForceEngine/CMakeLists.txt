@@ -24,4 +24,11 @@ set_target_properties(SDL2_image PROPERTIES IMPORTED_LOCATION "${SDL2_ANDROID_LI
 add_library(touchcontrols SHARED IMPORTED)
 set_target_properties(touchcontrols PROPERTIES IMPORTED_LOCATION "${SDL2_ANDROID_LIBS_DIR}/libtouchcontrols.so")
 
+# SAFFAL filesystem interception layer: exports libc file symbols (fopen, open,
+# stat, ...) that forward to the real libc, routing the engine's file access
+# through scoped-storage. Linked directly (and before libc) so the engine's own
+# calls bind to it, the same way MobileTouchControls links saffal.
+add_library(saffal SHARED IMPORTED)
+set_target_properties(saffal PROPERTIES IMPORTED_LOCATION "${SDL2_ANDROID_LIBS_DIR}/libsaffal.so")
+
 add_subdirectory("src/main/jni/TheForceEngine")

@@ -68,7 +68,15 @@ class OpenJKLauncher : GameLauncherInterface
 
     override fun getArgs(engine: GameEngine, subGame: SubGame): String
     {
-       return ""
+        // When the game files live on secondary (SD/scoped) storage, point the
+        // engine at it via fs_cdpath. The engine then searches that path, and
+        // SAFFAL intercepts the file access and routes it through scoped storage.
+        var args = ""
+        if (secondaryDirectory != null && subGame.rootPath != null && subGame.rootPath.contentEquals(secondaryDirectory!!))
+        {
+            args += " +set fs_cdpath " + Utils.quoteString(secondaryDirectory)
+        }
+        return args
     }
 
     override fun checkForDownloads(activity: Activity, engine: GameEngine, subGame: SubGame): Boolean

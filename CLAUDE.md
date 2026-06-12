@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Psi Touch is an Android app that ports PC games to touch devices. It currently ships two native game engines — **TheForceEngine** (labelled "IORTCW") and **OpenJK** (Jedi Academy) — each launched through the shared OpenTouch infrastructure. The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
+Psi Touch is an Android app that ports PC games to touch devices. It ships two native engine code-bases — **TheForceEngine** (labelled "IORTCW") and **OpenJK** — launched through the shared OpenTouch infrastructure. OpenJK is exposed as three engine entries: **OpenJK** (Jedi Academy single-player), **OpenJO** (Jedi Outcast single-player), and **OpenJK MP** (Jedi Academy multiplayer / `codemp`). The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
 
 - **App module namespace:** `com.opentouchgaming.psitouch`
 - **Min SDK:** 19 (Android 4.4) · **Target/Compile SDK:** 35
@@ -46,6 +46,8 @@ The native build is split into two mechanisms:
 1. **Prebuilt shared libs via ndk-build.** `src/main/jni/Android.mk` builds SDL2, touchcontrols, gl4es, audio libs, SAFFAL, etc. into `src/main/libs/<abi>/*.so`. These `.so` files are committed and consumed as `IMPORTED` libraries by the engine CMake builds. The app module's own `externalNativeBuild` points at `Android_dummy.mk` (empty) on purpose, so Gradle does **not** rebuild these automatically — rebuild them with `ndk-build` against `Android.mk` when the underlying submodules change.
 2. **Engine modules via CMake.** `:TheForceEngine` and `:OpenJK` each have a `build.gradle` + `CMakeLists.txt` that compile the engine and link against the prebuilt `.so`s in `src/main/libs/`. These DO build through Gradle. CMake links with `-Wl,--no-undefined`, so missing symbols fail the build.
 
+`:OpenJK` builds the whole OpenJK tree (added via the Alpha-wrapper `CMakeLists.txt` → upstream `src/main/jni/OpenJK/CMakeLists.txt`). On Android it produces the SP engines `libopenjk_sp.so` (JKA) and `libopenjo_sp.so` (JO) with their `libjagame.so`/`libjospgame.so`, **plus the MP client**: `libopenjk.so` (engine, statically includes the `rd-vanilla` renderer build target `librd-vanilla.so`) and the dynamically-loaded VM modules `libjampgame.so` / `libcgame.so` / `libui.so`. The MP dedicated server and rend2 renderer are not built. The renderers target **OpenGL ES 1.x** via `-DUSE_GLES1` (a fixed-function `rd-vanilla` port); engine + renderer link `GLESv1_CM EGL`. All these `.so` keep their `lib` prefix so they package into the APK, and the engine loads the renderer / VM modules by `lib<name>.so` from the app's native-lib dir (see the `__ANDROID__` branches in `shared/sys/sys_main.cpp` `Sys_LoadGameDll` and `codemp/client/cl_main.cpp`).
+
 Shared native flags, SDK versions, and ABI filters are defined once in `PsiTouch/build.gradle` (`ext.versions`, `ext.build_flags`, `ext.abi_filters`) and consumed by every native module.
 
 ## Architecture
@@ -81,3 +83,5 @@ Uses the OpenTouch storage model: legacy path `/OpenTouch/Psi/` plus Android R+ 
 - Native `.so` outputs in `src/main/libs/` are build artifacts that are committed; if you change a native submodule, regenerate them via ndk-build rather than expecting Gradle to.
 - The Gradle configuration cache is enabled (`org.gradle.configuration-cache=true`).
 - Profiling: see `src/main/jni/INFO.txt` for the simpleperf `app_profiler.py` invocation.
+- **CMake `option()` caching:** `option(...)` only seeds its default on the first configure, then pins the value in the per-module `.cxx/.../CMakeCache.txt`. Changing a default later (e.g. the `BuildMP*` toggles) does nothing for an already-configured tree. The OpenJK top-level `CMakeLists.txt` therefore force-enables the MP client targets on Android with normal (non-cache) `set()` after the `option()` calls, which shadow the cached values on every configure — no cache wipe needed.
+- **OpenJK MP audio:** the MP client currently uses the SDL software mixer; `USE_OPENAL` is left off on Android (the SP `USE_OPENAL`/`USE_OPENAL_EAX` split was not ported to `codemp/client/snd_dma.cpp`). MP also has no separate `EngineOptionsInterface` yet — it reuses `EngineOptionsOpenJK`. Run dir / sub-game folder is `JKMP` (`OpenJKMPLauncher.kt`).

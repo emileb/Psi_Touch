@@ -27,27 +27,11 @@ class TFELauncher : GameLauncherInterface
 
         File(runDirectory).mkdirs()
 
-        SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "main", 0, WEAPON_WHEEL_NBR,
-                arrayOf(""), R.drawable.file_folder, "tfe",
-                "Copy pak0.pk3, sp_pak1.pk3, sp_pak2.pk3, sp_pak3.pk3, sp_pk4.pk3 to: ", "Put your RTCW pk3 files here.txt")
+        SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "", 0, WEAPON_WHEEL_NBR,
+                arrayOf("dark.gob", "sounds.gob", "sprites.gob", "textures.gob"), R.drawable.file_folder, "tfe",
+                "Copy your Dark Forces files to: ", "Put your Dark Forces files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))
-
-        if (files != null)
-        {
-            for (f in files)
-            {
-                val dirName = f.name.lowercase(Locale.getDefault())
-                val pathName = f.parent
-                if (f.isDirectory && !dirName.contentEquals("main"))
-                {
-                    val pathInfo = f.absolutePath
-                    val fileInfo = Utils.filesInfoString(pathInfo, null, 3)
-                    val mod = SubGame(SUB_DIR + dirName, dirName, dirName, pathName, 0, R.drawable.joystick, pathInfo, fileInfo, WEAPON_WHEEL_NBR)
-                    availableSubGames.add(mod)
-                }
-            }
-        }
     }
 
     override fun getRunDirectory(): String
@@ -71,11 +55,22 @@ class TFELauncher : GameLauncherInterface
 
     override fun getArgs(engine: GameEngine, subGame: SubGame): String
     {
-       return ""
+        // When the game data lives on secondary (SD/scoped) storage, point TFE's
+        // source-data path at it with the absolute path via --gamePath. The engine
+        // keeps its working dir on the real primary storage (for saves/config) and
+        // only reads game data from this path, which SAFFAL intercepts and routes
+        // through scoped storage. (TFE has no fs_cdpath-style search list.)
+        var args = ""
+        if (secondaryDirectory != null && subGame.rootPath != null && subGame.rootPath.contentEquals(secondaryDirectory!!))
+        {
+            args += " --gamePath " + Utils.quoteString(secondaryDirectory)
+        }
+        return args
     }
 
     override fun checkForDownloads(activity: Activity, engine: GameEngine, subGame: SubGame): Boolean
     {
+        ZipUtils.extractAsset(activity, "tfe.zip", runDirectory,2000000);
         return false
     }
 }
