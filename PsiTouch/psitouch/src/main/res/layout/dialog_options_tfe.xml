@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/renderer_spinner"
+            android:id="@+id/gles_mode_spinner"
             layout="@layout/widget_view_spinner" />
 
         <LinearLayout

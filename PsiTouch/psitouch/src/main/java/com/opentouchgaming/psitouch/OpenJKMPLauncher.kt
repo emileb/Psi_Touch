@@ -25,7 +25,7 @@ class OpenJKMPLauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "base", 0, WEAPON_WHEEL_NBR,
-                arrayOf(""), R.drawable.jk_icon, "openjk",
+                arrayOf("base/assets0.pk3", "base/assets1.pk3", "base/assets2.pk3", "base/assets3.pk3"), R.drawable.jk_icon, "openjk",
                 "Copy assets0.pk3, assets1.pk3, assets2.pk3, assets3.pk3 to: ", "Put your Jedi Academy assets pk3 files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))
@@ -68,10 +68,13 @@ class OpenJKMPLauncher : GameLauncherInterface
 
     override fun getArgs(engine: GameEngine, subGame: SubGame): String
     {
-        // When the game files live on secondary (SD/scoped) storage, point the
-        // engine at it via fs_cdpath. The engine then searches that path, and
-        // SAFFAL intercepts the file access and routes it through scoped storage.
         var args = ""
+
+        if (subGame.getName() != null)
+        {
+            args = " +set fs_game " + Utils.quoteString(subGame.getName())
+        }
+
         if (secondaryDirectory != null && subGame.rootPath != null && subGame.rootPath.contentEquals(secondaryDirectory!!))
         {
             args += " +set fs_cdpath " + Utils.quoteString(secondaryDirectory)
