@@ -72,6 +72,19 @@ Each engine needs three pieces wired together:
 
 `PsiFragment.launchGame()` assembles args from `engine.args` + `RunInfo.args` + user args, builds an `Intent` for `org.libsdl.app2012.SDLActivity` (in `:androidcore`) carrying `load_libs`, `game_path`, `args`, etc., then `LaunchIntent.populateIntent(...)` adds audio/control/quick-command extras before `startActivity`.
 
+### Native touch / JNI glue (per engine)
+
+The on-screen touch UI and JNI bridge are shared C/C++ in `Clibs_OpenTouch`, but each engine owns its glue in its **own `mobile/` folder** next to that engine's CMake sources — not in `Clibs_OpenTouch/psi` or the legacy `Clibs_OpenTouch/alpha`:
+
+- `Alpha/TheForceEngine/.../TheForceEngine/mobile/` — `game_interface.cpp` (TFE `Portable*` impl), `touch_interface_tfe.cpp`, and the engine's copy of `touch_interface.h`.
+- `Alpha/OpenJK/.../OpenJK/mobile/` — a **single shared** `game_interface.cpp` and `touch_interface_openjk.cpp` (+ `touch_interface.h`) compiled into **both** the SP (`code/`) and MP (`codemp/`) targets, referenced as `${PROG_SOURCE_DIR}/mobile/...`.
+
+Engine-agnostic pieces stay in `Clibs_OpenTouch`: the JNI bridge `android_jni_inc.cpp` (holds the global `TouchInterface touchInterface`), its thin wrapper `psi/android_jni.cpp` (just `#include "../android_jni_inc.cpp"`, compiled per engine), `touch_interface_base.{cpp,h}`, and the `Portable*` API surface `game_interface.h`.
+
+`touch_interface.h` (the `TouchInterface` class) **differs per engine** — OpenJK's declares the force-select panel members; TFE's is a trimmed copy. Because the shared `android_jni_inc.cpp` and `touch_interface_base.cpp` both `#include "touch_interface.h"`, **each engine target must put its own `mobile/` dir on the include path** (and must NOT pull `Clibs_OpenTouch/alpha`) so the global object's layout and the engine's method code resolve the same definition. Getting this wrong is a silent ODR/layout mismatch, not a compile error.
+
+**OpenJK SP/MP single file:** `mobile/game_interface.cpp` serves both targets; the differences (some force-power command strings, SP-only quicksave/datapad, the force-power "known" query, the SP in-game-cinematic check, and which engine's `client/client.h` is included) are guarded by `OPENJK_MP`, defined only on the MP build via a per-source `set_source_files_properties(... COMPILE_DEFINITIONS "OPENJK_MP")` in `codemp/CMakeLists.txt`. `touch_interface_openjk.cpp` is identical for both.
+
 ### Storage
 
 Uses the OpenTouch storage model: legacy path `/OpenTouch/Psi/` plus Android R+ scoped storage (configured via `ScopedStorageDialog`, with primary internal + optional secondary SD paths). `EntryActivity` handles the runtime permission / scoped-storage first-run prompts split by SDK level.
@@ -85,3 +98,5 @@ Uses the OpenTouch storage model: legacy path `/OpenTouch/Psi/` plus Android R+ 
 - Profiling: see `src/main/jni/INFO.txt` for the simpleperf `app_profiler.py` invocation.
 - **CMake `option()` caching:** `option(...)` only seeds its default on the first configure, then pins the value in the per-module `.cxx/.../CMakeCache.txt`. Changing a default later (e.g. the `BuildMP*` toggles) does nothing for an already-configured tree. The OpenJK top-level `CMakeLists.txt` therefore force-enables the MP client targets on Android with normal (non-cache) `set()` after the `option()` calls, which shadow the cached values on every configure — no cache wipe needed.
 - **OpenJK MP audio:** the MP client currently uses the SDL software mixer; `USE_OPENAL` is left off on Android (the SP `USE_OPENAL`/`USE_OPENAL_EAX` split was not ported to `codemp/client/snd_dma.cpp`). MP also has no separate `EngineOptionsInterface` yet — it reuses `EngineOptionsOpenJK`. Run dir / sub-game folder is `JKMP` (`OpenJKMPLauncher.kt`).
+- **`ENGINE_NAME` per target:** `touch_interface_*.cpp` builds its touch-settings XML filenames (`game_<ENGINE_NAME>.xml`, etc.) from the `ENGINE_NAME` string literal, set per-source in each target's CMake. TFE is `"theforceengine"`, OpenJK SP is `"openjk"`, OpenJK **MP is `"openjkmp"`** — so MP keeps its own set of touch-control layout files separate from SP (fresh defaults on first run).
+- **TFE tap-to-position mouse:** in the DarkForces in-game menus (agent / briefing / escape / PDA) the on-screen mouse teleports to the tapped point and the engine hides its own cursor; the ImGui frontend keeps relative drag (small widgets). Toggle with `PortableSetMouseTapMode()` / `PortableGetMouseTapMode()`; `PortableInGameMenu()` distinguishes the DF menus (both report `TS_MENU`) and returns the pillarbox X offset for the centred 4:3 menus. The engine-side cursor-hide hook (`menu_setCursorHidden` in `TFE_DarkForces/GameUI/menu.cpp` + `escapeMenu.cpp`) is guarded by `__ANDROID__` so desktop TFE is byte-for-byte unchanged.

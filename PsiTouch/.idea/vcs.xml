@@ -4,7 +4,6 @@
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AndroidCore_OpenTouch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/OpenJK/src/main/jni/OpenJK" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/OpenJK/src/main/jni/jk3_old" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/TheForceEngine/src/main/jni/TheForceEngine" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/fluidsynth/src/main/jni/fluidsynth-android" vcs="Git" />

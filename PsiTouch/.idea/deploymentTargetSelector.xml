@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="psitouch">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-06-08T19:35:06.694664Z">
+        <DropdownSelection timestamp="2026-06-14T17:34:26.255019Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CX20BNHBB" />

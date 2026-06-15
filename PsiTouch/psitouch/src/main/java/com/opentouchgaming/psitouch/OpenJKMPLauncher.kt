@@ -12,7 +12,7 @@ class OpenJKMPLauncher : GameLauncherInterface
 
     private val log = DebugLog(DebugLog.Module.CONTROLS, "OpenJKMPLauncher")
 
-    val SUB_DIR = "JKMP"
+    val SUB_DIR = "JAMP"
 
     val WEAPON_WHEEL_NBR = 10
 
@@ -25,7 +25,7 @@ class OpenJKMPLauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "base", 0, WEAPON_WHEEL_NBR,
-                arrayOf(""), R.drawable.file_folder, "openjk",
+                arrayOf(""), R.drawable.jk_icon, "openjk",
                 "Copy assets0.pk3, assets1.pk3, assets2.pk3, assets3.pk3 to: ", "Put your Jedi Academy assets pk3 files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))

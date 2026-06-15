@@ -25,7 +25,7 @@ class OpenJOLauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "base", 0, WEAPON_WHEEL_NBR,
-                arrayOf(""), R.drawable.file_folder, "openjo",
+                arrayOf(""), R.drawable.jo_icon, "openjo",
                 "Copy assets0.pk3, assets1.pk3, assets2.pk3, assets5.pk3 to: ", "Put your Jedi Outcast assets pk3 files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))

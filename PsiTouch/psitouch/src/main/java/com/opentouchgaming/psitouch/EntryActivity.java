@@ -102,14 +102,14 @@ public class EntryActivity extends FragmentActivity
 
                 new GameEngine(GameEngine.Engine.TFE,
                                0,
-                               "IORTCW",
-                               "iortcw",
+                               "Dark Forces",
+                               "tfe",
                                "",
                                new String[]{"dev"},
                                new String[][]{{"touchcontrols", "z", "tfe"}},
                                "",
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
-                               R.drawable.joystick,
+                               R.drawable.df_icon,
                                0,
                                0x004444e0,
                                0,
@@ -117,7 +117,7 @@ public class EntryActivity extends FragmentActivity
 
                 new GameEngine(GameEngine.Engine.OPENJK,
                                0,
-                               "OpenJK",
+                               "Jedi Academy",
                                "openjk",
                                "",
                                new String[]{"dev"},
@@ -132,7 +132,7 @@ public class EntryActivity extends FragmentActivity
 
                 new GameEngine(GameEngine.Engine.OPENJO,
                                0,
-                               "OpenJO",
+                               "Jedi Outcast",
                                "openjo",
                                "",
                                new String[]{"dev"},
@@ -147,7 +147,7 @@ public class EntryActivity extends FragmentActivity
 
                 new GameEngine(GameEngine.Engine.OPENJK_MP,
                                0,
-                               "OpenJK MP",
+                               "JA Multiplayer",
                                "openjk_mp",
                                "",
                                new String[]{"dev"},
@@ -178,7 +178,10 @@ public class EntryActivity extends FragmentActivity
         AppInfo.scopedTutorial = scopedTutorial;
 
         AppInfo.userFilesEntries = new UserFilesDialog.UserFileEntryDescription[]{
-                new UserFilesDialog.UserFileEntryDescription("TheForceEngine", "dev", R.drawable.joystick, "iortcw"),
+                new UserFilesDialog.UserFileEntryDescription("TheForceEngine", "dev", R.drawable.joystick, "tfe"),
+                new UserFilesDialog.UserFileEntryDescription("Jedi Academy", "", R.drawable.jk_icon, "ja"),
+                new UserFilesDialog.UserFileEntryDescription("Jedi Outcast", "", R.drawable.jo_icon, "jo"),
+                new UserFilesDialog.UserFileEntryDescription("Jedi Academy MP", "", R.drawable.jk_icon, "jamp"),
 
                 new UserFilesDialog.UserFileEntryDescription("Mod setups", "", R.drawable.ic_baseline_file_copy, "loadouts"),
                 new UserFilesDialog.UserFileEntryDescription("Gamepad setups", "", R.drawable.ic_baseline_file_copy, "gamepad"),
