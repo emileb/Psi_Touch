@@ -19,15 +19,11 @@
             android:id="@+id/openal_switch"
             layout="@layout/widget_view_switch" />
 
-        <LinearLayout
-            android:id="@+id/software_options"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <include
-                android:id="@+id/resolution_select"
-                layout="@layout/widget_view_resolution_select" />
-        </LinearLayout>
+        <include
+            android:id="@+id/mouse_tap_mode_switch"
+            layout="@layout/widget_view_switch" />
+
+        <include layout="@layout/widget_view_audio_override"/>
 
         <include layout="@layout/widget_view_delete_data"
             android:id="@+id/delete_data_button"/>

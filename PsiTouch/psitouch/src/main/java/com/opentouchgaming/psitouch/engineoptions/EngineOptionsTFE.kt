@@ -5,14 +5,17 @@ import android.app.Dialog
 import android.view.View
 import android.view.ViewGroup
 import androidx.arch.core.util.Function
-import com.opentouchgaming.psitouch.R
 import com.opentouchgaming.androidcore.AppInfo
 import com.opentouchgaming.androidcore.DebugLog
 import com.opentouchgaming.androidcore.EngineOptionsInterface
 import com.opentouchgaming.androidcore.EngineOptionsInterface.MultiplayerCallback
 import com.opentouchgaming.androidcore.EngineOptionsInterface.RunInfo
 import com.opentouchgaming.androidcore.GameEngine
+import com.opentouchgaming.androidcore.ui.widgets.AudioOverrideWidget
+import com.opentouchgaming.androidcore.ui.widgets.DeleteDataWidget
 import com.opentouchgaming.androidcore.ui.widgets.SpinnerWidget
+import com.opentouchgaming.androidcore.ui.widgets.SwitchWidget
+import com.opentouchgaming.psitouch.R
 import com.opentouchgaming.psitouch.databinding.DialogOptionsTfeBinding
 
 class EngineOptionsTFE : EngineOptionsInterface
@@ -23,6 +26,8 @@ class EngineOptionsTFE : EngineOptionsInterface
 
     lateinit var dialog: Dialog
 
+    val audioOverride = AudioOverrideWidget("tfe_")
+
     // GLES rendering mode override. Auto lets the engine pick the highest capable mode, the others
     // force it down via the engine's --force_gles* command line arguments.
     val GLES_MODE_AUTO = 0
@@ -31,6 +36,9 @@ class EngineOptionsTFE : EngineOptionsInterface
 
     val GLES_MODE_PREFIX = "tfe_gles_mode"
     val GLES_MODE_DEFAULT = GLES_MODE_AUTO
+
+    val TAP_MODE_PREFIX = "tfe_mouse_tap_mode"
+    val TAP_MODE_DEFAULT = true
 
 
     override fun showDialog(activity: Activity, engine: GameEngine, version: Int, update: Function<Int, Void>)
@@ -46,8 +54,28 @@ class EngineOptionsTFE : EngineOptionsInterface
 
         val glesItems = arrayOf<Pair<String, View?>>(Pair("Auto (highest)", null), Pair("Force GLES 3.0", null), Pair("Force GLES 2.0", null))
         SpinnerWidget(activity, binding.glesModeSpinner.root, "Rendering mode",
-            "Force the GLES feature level. Auto picks the highest the device supports. Lower modes are for testing/compatibility.",
+            "Force the GLES feature level.",
             glesItems, GLES_MODE_PREFIX, GLES_MODE_DEFAULT, R.drawable.setting_gpu)
+
+        SwitchWidget(activity, binding.mouseTapModeSwitch.root, "Tap-to-position menu mouse",
+            "Tap in-game menu items, turn off to drag cursor.",
+            TAP_MODE_PREFIX, TAP_MODE_DEFAULT, R.drawable.setting_gear)
+
+        // Audio buffer override. A larger buffer avoids stuttery audio (e.g.
+        // while playing the startup video). TFE mixes at a fixed rate, so only
+        // the buffer size is honoured (see audioOverrideFreq below).
+        audioOverride.linkUI(activity, dialog)
+
+        DeleteDataWidget(
+            activity,
+            dialog.findViewById(R.id.delete_data_button),
+            "Delete all Dark Forces settings files?",
+            arrayOf<String>("/tfe/"),
+            arrayOf<String>("settings.ini", "settings_default.ini", "tfe_input_remapping.bin"),
+            "",
+            arrayOf<String>(""),
+            arrayOf<String>("")
+        )
 
         dialog.show()
     }
@@ -64,6 +92,8 @@ class EngineOptionsTFE : EngineOptionsInterface
             GLES_MODE_20 -> info.args = " --force_gles20 "
         }
 
+        info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
+
         return info
     }
 
@@ -79,11 +109,19 @@ class EngineOptionsTFE : EngineOptionsInterface
 
     override fun audioOverrideFreq(): Int
     {
+        // TFE's mixer runs at a fixed sample rate, so the device frequency can't
+        // be changed without breaking playback pitch. Only the buffer size is
+        // overridable (see audioDevice.cpp).
         return 0
     }
 
     override fun audioOverrideSamples(): Int
     {
-        return 0
+        return audioOverride.getSamples()
+    }
+
+    override fun audioOverrideBackend(): Int
+    {
+        return audioOverride.getBackend()
     }
 }

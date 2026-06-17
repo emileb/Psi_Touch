@@ -28,7 +28,7 @@ class TFELauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "", 0, WEAPON_WHEEL_NBR,
-                arrayOf("dark.gob", "sounds.gob", "sprites.gob", "textures.gob"), R.drawable.file_folder, "tfe",
+                arrayOf("dark.gob", "sounds.gob", "sprites.gob", "textures.gob"), R.drawable.df_icon, "tfe",
                 "Copy your Dark Forces files to: ", "Put your Dark Forces files here.txt")
 
         val files = Utils.listFiles(arrayOf(runDirectory, secondaryDirectory))

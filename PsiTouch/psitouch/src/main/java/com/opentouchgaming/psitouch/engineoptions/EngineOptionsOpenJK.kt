@@ -2,6 +2,7 @@ package com.opentouchgaming.psitouch.engineoptions
 
 import android.app.Activity
 import android.app.Dialog
+import android.view.View
 import android.view.ViewGroup
 import androidx.arch.core.util.Function
 import com.opentouchgaming.psitouch.R
@@ -11,6 +12,8 @@ import com.opentouchgaming.androidcore.EngineOptionsInterface
 import com.opentouchgaming.androidcore.EngineOptionsInterface.MultiplayerCallback
 import com.opentouchgaming.androidcore.EngineOptionsInterface.RunInfo
 import com.opentouchgaming.androidcore.GameEngine
+import com.opentouchgaming.androidcore.ui.widgets.AudioOverrideWidget
+import com.opentouchgaming.androidcore.ui.widgets.DeleteDataWidget
 import com.opentouchgaming.androidcore.ui.widgets.SwitchWidget
 import com.opentouchgaming.psitouch.databinding.DialogOptionsOpenjkBinding
 
@@ -22,8 +25,13 @@ class EngineOptionsOpenJK : EngineOptionsInterface
 
     lateinit var dialog: Dialog
 
+    val audioOverride = AudioOverrideWidget("openjk_")
+
     val OPENAL_PREFIX = "openjk_use_openal"
     val OPENAL_DEFAULT = false
+
+    val TAP_MODE_PREFIX = "openjk_mouse_tap_mode"
+    val TAP_MODE_DEFAULT = true
 
 
     override fun showDialog(activity: Activity, engine: GameEngine, version: Int, update: Function<Int, Void>)
@@ -41,6 +49,25 @@ class EngineOptionsOpenJK : EngineOptionsInterface
             "Use the OpenAL sound backend (positional/EAX audio) instead of the default software mixer.",
             OPENAL_PREFIX, OPENAL_DEFAULT, R.drawable.setting_audio)
 
+        SwitchWidget(activity, binding.mouseTapModeSwitch.root, "Tap-to-position menu mouse",
+            "Tap in-game menu items, turn off to drag cursor.",
+            TAP_MODE_PREFIX, TAP_MODE_DEFAULT, R.drawable.setting_gear)
+
+        // Audio buffer / rate override. A larger buffer avoids the stuttery
+        // software-mixer audio during the startup cinematic.
+        audioOverride.linkUI(activity, dialog)
+
+        DeleteDataWidget(
+            activity,
+            dialog.findViewById(R.id.delete_data_button),
+            "Delete all OpenJK settings files?",
+            arrayOf<String>("/ja/base/", "/jamp/base/", "/jo/base/"),
+            arrayOf<String>("openjk_sp.cfg", "openjo_sp.cfg", "openjk.cfg"),
+            "",
+            arrayOf<String>(""),
+            arrayOf<String>("")
+        )
+
         dialog.show()
     }
 
@@ -51,6 +78,9 @@ class EngineOptionsOpenJK : EngineOptionsInterface
 
         val useOpenAL = if (SwitchWidget.fetchValue(AppInfo.getContext(), OPENAL_PREFIX, OPENAL_DEFAULT)) 1 else 0
         info.args = " +set r_mode -1 +set r_customwidth \$W +set r_customheight \$H +set s_UseOpenAL $useOpenAL "
+
+        info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
+
         return info
     }
 
@@ -66,11 +96,16 @@ class EngineOptionsOpenJK : EngineOptionsInterface
 
     override fun audioOverrideFreq(): Int
     {
-        return 0
+        return audioOverride.getFreq()
     }
 
     override fun audioOverrideSamples(): Int
     {
-        return 0
+        return audioOverride.getSamples()
+    }
+
+    override fun audioOverrideBackend(): Int
+    {
+        return audioOverride.getBackend()
     }
 }
