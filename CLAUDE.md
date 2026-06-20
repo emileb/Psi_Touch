@@ -91,6 +91,7 @@ Uses the OpenTouch storage model: legacy path `/OpenTouch/Psi/` plus Android R+ 
 
 ## Conventions & Gotchas
 
+- **Comments: keep them simple and concise.** Prefer a single short line explaining the *why*; do not write multi-line verbose explanations in the code. Save the deeper rationale for commit messages / PRs, not the source.
 - **ViewBinding is enabled** (`viewBinding true`); engine option dialogs inflate generated `*Binding` classes from layouts in `res/layout/dialog_options_*.xml`. The binding name derives from the layout file name.
 - **Glide is pinned to 4.16.0** and `constraintlayout` to `1.1.3` / `recyclerview` to `1.3.2` for Nvidia Shield TV + API 19 compatibility — do not upgrade without testing on those targets (see `:androidcore` `CLAUDE.md`).
 - Native `.so` outputs in `src/main/libs/` are build artifacts that are committed; if you change a native submodule, regenerate them via ndk-build rather than expecting Gradle to.

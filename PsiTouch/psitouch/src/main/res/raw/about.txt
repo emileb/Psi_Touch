@@ -1,0 +1,16 @@
+Thank you to the testers which found many bugs and continue to do so:
+
+
+*--- Monolyth-42
+*--- Antares
+*--- kostykar21
+*--- DrKk1lLr
+*--- AnimeDroid_Chan
+
+This app uses code or ideas from the following sources:
+
+https://github.com/JACoders/OpenJK
+https://github.com/luciusDXL/TheForceEngine
+https://github.com/SoVRHere/TheForceEngineVR
+https://github.com/sandstranger/com.mobilerpgpack.phone
+https://github.com/glKarin/com.n0n3m4.diii4a
