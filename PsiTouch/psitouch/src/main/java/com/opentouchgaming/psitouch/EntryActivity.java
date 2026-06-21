@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJK;
+import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJKMP;
+import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJO;
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsTFE;
 import com.opentouchgaming.androidcore.AboutDialog;
 import com.opentouchgaming.androidcore.AppInfo;
@@ -132,7 +134,7 @@ public class EntryActivity extends FragmentActivity
                                0,
                                0x003928F0,
                                0,
-                               EngineOptionsOpenJK.class),
+                               EngineOptionsOpenJO.class),
 
                 new GameEngine(GameEngine.Engine.OPENJK_MP,
                                0,
@@ -147,7 +149,7 @@ public class EntryActivity extends FragmentActivity
                                0,
                            0x00C40307,
                                0,
-                               EngineOptionsOpenJK.class),};
+                               EngineOptionsOpenJKMP.class),};
 
         List<StorageConfigDialog.StorageExamples> examples = new ArrayList<>();
         examples.add(new StorageConfigDialog.StorageExamples("User files", "(config, saves etc):", StorageConfigDialog.PathLocation.PRIM, "/user_files"));

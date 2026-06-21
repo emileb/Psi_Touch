@@ -28,7 +28,7 @@ class TFELauncher : GameLauncherInterface
         File(runDirectory).mkdirs()
 
         SubGame.addGame(availableSubGames, runDirectory, secondaryDirectory, SUB_DIR, "", 0, WEAPON_WHEEL_NBR,
-                arrayOf("dark.gob", "sounds.gob", "sprites.gob", "textures.gob"), R.drawable.df_icon, "tfe",
+                arrayOf("dark.gob", "sounds.gob", "sprites.gob", "textures.gob"), R.drawable.df_icon, "Dark Forces",
                 "Copy your Dark Forces files (inc LFD folder) to: ", "Put your Dark Forces files here.txt")
 
         for (game in availableSubGames)
