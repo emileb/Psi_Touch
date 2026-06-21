@@ -13,6 +13,7 @@ import com.opentouchgaming.androidcore.EngineOptionsInterface.RunInfo
 import com.opentouchgaming.androidcore.GameEngine
 import com.opentouchgaming.androidcore.ui.widgets.AudioOverrideWidget
 import com.opentouchgaming.androidcore.ui.widgets.DeleteDataWidget
+import com.opentouchgaming.androidcore.ui.widgets.GamepadConfigWidget
 import com.opentouchgaming.androidcore.ui.widgets.SpinnerWidget
 import com.opentouchgaming.androidcore.ui.widgets.SwitchWidget
 import com.opentouchgaming.psitouch.R
@@ -40,6 +41,8 @@ class EngineOptionsTFE : EngineOptionsInterface
     val TAP_MODE_PREFIX = "tfe_mouse_tap_mode"
     val TAP_MODE_DEFAULT = true
 
+    val GAMEPAD_CONFIG_KEY = "tfe_gamepad_config"
+
 
     override fun showDialog(activity: Activity, engine: GameEngine, version: Int, update: Function<Int, Void>)
     {
@@ -60,6 +63,8 @@ class EngineOptionsTFE : EngineOptionsInterface
         SwitchWidget(activity, binding.mouseTapModeSwitch.root, "Tap-to-position menu mouse",
             "Tap in-game menu items, turn off to drag cursor.",
             TAP_MODE_PREFIX, TAP_MODE_DEFAULT, R.drawable.setting_gear)
+
+        GamepadConfigWidget(activity, binding.gamepadConfigSpinner.root, GAMEPAD_CONFIG_KEY)
 
         // Audio buffer override. A larger buffer avoids stuttery audio (e.g.
         // while playing the startup video). TFE mixes at a fixed rate, so only
@@ -93,6 +98,7 @@ class EngineOptionsTFE : EngineOptionsInterface
         }
 
         info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
+        info.gamepadConfig = GamepadConfigWidget.fetchValue(AppInfo.getContext(), GAMEPAD_CONFIG_KEY)
 
         return info
     }

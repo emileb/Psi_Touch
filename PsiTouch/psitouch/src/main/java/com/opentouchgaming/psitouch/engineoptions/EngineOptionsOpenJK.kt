@@ -14,6 +14,7 @@ import com.opentouchgaming.androidcore.EngineOptionsInterface.RunInfo
 import com.opentouchgaming.androidcore.GameEngine
 import com.opentouchgaming.androidcore.ui.widgets.AudioOverrideWidget
 import com.opentouchgaming.androidcore.ui.widgets.DeleteDataWidget
+import com.opentouchgaming.androidcore.ui.widgets.GamepadConfigWidget
 import com.opentouchgaming.androidcore.ui.widgets.SwitchWidget
 import com.opentouchgaming.psitouch.databinding.DialogOptionsOpenjkBinding
 
@@ -32,6 +33,8 @@ class EngineOptionsOpenJK : EngineOptionsInterface
 
     val TAP_MODE_PREFIX = "openjk_mouse_tap_mode"
     val TAP_MODE_DEFAULT = true
+
+    val GAMEPAD_CONFIG_KEY = "openjk_gamepad_config"
 
 
     override fun showDialog(activity: Activity, engine: GameEngine, version: Int, update: Function<Int, Void>)
@@ -52,6 +55,8 @@ class EngineOptionsOpenJK : EngineOptionsInterface
         SwitchWidget(activity, binding.mouseTapModeSwitch.root, "Tap-to-position menu mouse",
             "Tap in-game menu items, turn off to drag cursor.",
             TAP_MODE_PREFIX, TAP_MODE_DEFAULT, R.drawable.setting_gear)
+
+        GamepadConfigWidget(activity, binding.gamepadConfigSpinner.root, GAMEPAD_CONFIG_KEY)
 
         // Audio buffer / rate override. A larger buffer avoids the stuttery
         // software-mixer audio during the startup cinematic.
@@ -80,6 +85,7 @@ class EngineOptionsOpenJK : EngineOptionsInterface
         info.args = " +set r_mode -1 +set r_customwidth \$W +set r_customheight \$H +set s_UseOpenAL $useOpenAL "
 
         info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
+        info.gamepadConfig = GamepadConfigWidget.fetchValue(AppInfo.getContext(), GAMEPAD_CONFIG_KEY)
 
         return info
     }
