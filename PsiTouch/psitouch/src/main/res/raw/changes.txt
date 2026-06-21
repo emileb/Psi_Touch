@@ -4,3 +4,5 @@ BUILD WITH: ~/Library/Android/sdk/ndk/25.2.9519653/ndk-build -j20
 v0.5
 * Fixed gamepad
 * Fixed Launcher game titles and icons
+* Fixed log writer
+* UI fixes

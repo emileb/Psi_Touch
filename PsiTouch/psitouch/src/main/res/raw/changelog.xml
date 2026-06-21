@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="0.5" changeDate="21 June 2026">
+        <changelogtext>Fixed gamepad</changelogtext>
+        <changelogtext>Fixed Launcher game titles and icons</changelogtext>
+        <changelogtext>Fixed log writer</changelogtext>
+        <changelogtext>UI fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="0.41 alpha" changeDate="20 June 2026">
         <changelogtext>Added map button to TFE</changelogtext>
         <changelogtext>Added map multitouch control to TFE map</changelogtext>
