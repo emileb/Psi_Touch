@@ -66,17 +66,6 @@ public class EntryActivity extends FragmentActivity
         tut.addScreen(new Tutorial.Screen("Default folder locations:", "", "http://opentouchgaming.com/tutorial/quad/install_5_default.png"));
         AppInfo.tutorials.add(tut);
 
-        tut = new Tutorial("Installing music files", "ic_tut_music_note");
-        tut.addScreen(new Tutorial.Screen("Download the music files. They should be in OGG format and named exactly as below.",
-                                          "",
-                                          "http://opentouchgaming.com/tutorial/quad/music_1_files.png"));
-        tut.addScreen(new Tutorial.Screen("Connect your device to your PC and enable file transfer.",
-                                          "",
-                                          "http://opentouchgaming.com/tutorial/quad/install_2_connect.png"));
-        tut.addScreen(new Tutorial.Screen("Copy the music files to the following folders:",
-                                          "",
-                                          "http://opentouchgaming.com/tutorial/quad/music_3_default.png"));
-        AppInfo.tutorials.add(tut);
 
         tut = new Tutorial("Using the console/keyboard", "ic_tut_keyboard");
         tut.addScreen(new Tutorial.Screen("Start a new game and press the 'cog' to edit the touch controls",
@@ -111,7 +100,7 @@ public class EntryActivity extends FragmentActivity
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
                                R.drawable.df_icon,
                                0,
-                               0x004444e0,
+                               0x00786C6C,
                                0,
                                EngineOptionsTFE.class),
 
@@ -126,7 +115,7 @@ public class EntryActivity extends FragmentActivity
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
                                R.drawable.jk_icon,
                                0,
-                               0x004444e0,
+                               0x001A8D08,
                                0,
                                EngineOptionsOpenJK.class),
 
@@ -141,7 +130,7 @@ public class EntryActivity extends FragmentActivity
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
                                R.drawable.jo_icon,
                                0,
-                               0x004444e0,
+                               0x003928F0,
                                0,
                                EngineOptionsOpenJK.class),
 
@@ -154,9 +143,9 @@ public class EntryActivity extends FragmentActivity
                                new String[][]{{"touchcontrols", "z", "openjk"}},
                                "",
                                GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
-                               R.drawable.jk_icon,
+                               R.drawable.jk_mp_icon,
                                0,
-                               0x004444e0,
+                           0x00C40307,
                                0,
                                EngineOptionsOpenJK.class),};
 

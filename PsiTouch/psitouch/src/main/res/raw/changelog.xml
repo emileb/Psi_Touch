@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
-    <changelogversion versionName="0.4 alpha" changeDate="20 June 2026">
+    <changelogversion versionName="0.41 alpha" changeDate="20 June 2026">
         <changelogtext>Added map button to TFE</changelogtext>
         <changelogtext>Added map multitouch control to TFE map</changelogtext>
         <changelogtext>Fixed JK shadows</changelogtext>
