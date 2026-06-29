@@ -24,6 +24,10 @@
             layout="@layout/widget_view_switch" />
 
         <include
+            android:id="@+id/dynamic_crosshair_switch"
+            layout="@layout/widget_view_switch" />
+
+        <include
             android:id="@+id/gamepad_config_spinner"
             layout="@layout/widget_view_gamepad_config" />
 

@@ -1,6 +1,13 @@
 
 BUILD WITH: ~/Library/Android/sdk/ndk/25.2.9519653/ndk-build -j20
 
+v1.0 RC1
+* Added cg_dynamicCrosshair option for OpenJK
+* Added version checking
+* Increased gamepad sensitivity
+* Fixed music when using OpenAL in OpenJK
+* Fixed CUSTOM buttons for both games
+
 v0.5
 * Fixed gamepad
 * Fixed Launcher game titles and icons

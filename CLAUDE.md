@@ -20,7 +20,7 @@ This Git repo is a multi-submodule super-project. The Gradle project root is `Ps
 - `AndroidCore_OpenTouch/` — submodule providing the `:androidcore` and `:changeloglib` library modules. **Most shared behavior lives here; see its own `CLAUDE.md`.**
 - `SAFFAL/` — submodule providing `:saffal` (scoped-storage file abstraction).
 - `PsiTouch/psitouch/src/main/jni/` — native sources, mostly submodules (`SDL2_OpenTouch`, `Clibs_OpenTouch`, `MobileTouchControls`, `gl4es`, `AudioLibs_OpenTouch`).
-- `PsiTouch/psitouch/src/main/jni/Alpha/{TheForceEngine,OpenJK}/` — each game engine wrapped as its own Gradle library module (`:TheForceEngine`, `:OpenJK`) built via CMake.
+- `PsiTouch/psitouch/src/main/jni/Games/{TheForceEngine,OpenJK}/` — each game engine wrapped as its own Gradle library module (`:TheForceEngine`, `:OpenJK`) built via CMake.
 - `SAFFAL/` (the top-level dir) appears to be a stale/unrelated checkout; the active SAFFAL used by the build is the `SAFFAL/` submodule referenced from `PsiTouch/settings.gradle`.
 
 After cloning, initialize submodules: `git submodule update --init --recursive`.
@@ -66,7 +66,7 @@ Each engine needs three pieces wired together:
 
 1. A `GameLauncherInterface` impl (e.g. `TFELauncher.kt`, `OpenJKLauncher.kt`) — defines run/secondary directories, sub-game discovery (folders under the engine's `SUB_DIR`), and quick-commands paths. Registered in `PsiFragment`.
 2. An `EngineOptionsInterface` impl under `engineoptions/` (e.g. `EngineOptionsTFE.kt`) — provides the settings dialog (via ViewBinding, e.g. `DialogOptionsTfeBinding`) and `RunInfo` (GLES version, audio overrides). Referenced from the `GameEngine` entry in `EntryActivity`.
-3. A native engine module under `jni/Alpha/` registered in `PsiTouch/settings.gradle` and depended on in `psitouch/build.gradle`.
+3. A native engine module under `jni/Games/` registered in `PsiTouch/settings.gradle` and depended on in `psitouch/build.gradle`.
 
 ### Launch flow
 
@@ -76,8 +76,8 @@ Each engine needs three pieces wired together:
 
 The on-screen touch UI and JNI bridge are shared C/C++ in `Clibs_OpenTouch`, but each engine owns its glue in its **own `mobile/` folder** next to that engine's CMake sources — not in `Clibs_OpenTouch/psi` or the legacy `Clibs_OpenTouch/alpha`:
 
-- `Alpha/TheForceEngine/.../TheForceEngine/mobile/` — `game_interface.cpp` (TFE `Portable*` impl), `touch_interface_tfe.cpp`, and the engine's copy of `touch_interface.h`.
-- `Alpha/OpenJK/.../OpenJK/mobile/` — a **single shared** `game_interface.cpp` and `touch_interface_openjk.cpp` (+ `touch_interface.h`) compiled into **both** the SP (`code/`) and MP (`codemp/`) targets, referenced as `${PROG_SOURCE_DIR}/mobile/...`.
+- `Games/TheForceEngine/.../TheForceEngine/mobile/` — `game_interface.cpp` (TFE `Portable*` impl), `touch_interface_tfe.cpp`, and the engine's copy of `touch_interface.h`.
+- `Games/OpenJK/.../OpenJK/mobile/` — a **single shared** `game_interface.cpp` and `touch_interface_openjk.cpp` (+ `touch_interface.h`) compiled into **both** the SP (`code/`) and MP (`codemp/`) targets, referenced as `${PROG_SOURCE_DIR}/mobile/...`.
 
 Engine-agnostic pieces stay in `Clibs_OpenTouch`: the JNI bridge `android_jni_inc.cpp` (holds the global `TouchInterface touchInterface`), its thin wrapper `psi/android_jni.cpp` (just `#include "../android_jni_inc.cpp"`, compiled per engine), `touch_interface_base.{cpp,h}`, and the `Portable*` API surface `game_interface.h`.
 

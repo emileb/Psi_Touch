@@ -219,6 +219,7 @@ public class EntryActivity extends FragmentActivity
 
         AppInfo.website = "http://opentouchgaming.com";
         AppInfo.showRateButton = false;
+        AppInfo.versionCheckKey = "psi"; // non-null enables the online version check
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout

@@ -3,14 +3,14 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AndroidCore_OpenTouch" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/OpenJK/src/main/jni/OpenJK" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Alpha/TheForceEngine/src/main/jni/TheForceEngine" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/fluidsynth/src/main/jni/fluidsynth-android" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/fluidsynth/src/main/jni/fluidsynth-android/test/manual" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/oboe/src/main/jni/oboe" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/AudioLibs_OpenTouch/openal-soft/src/main/jni/openal" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Clibs_OpenTouch" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Games/OpenJK/src/main/jni/OpenJK" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/Games/TheForceEngine/src/main/jni/TheForceEngine" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/MobileTouchControls" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/SDL2_OpenTouch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/psitouch/src/main/jni/gl4es" vcs="Git" />

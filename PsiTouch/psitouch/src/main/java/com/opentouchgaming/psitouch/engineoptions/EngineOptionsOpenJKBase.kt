@@ -42,6 +42,9 @@ abstract class EngineOptionsOpenJKBase(
     val TAP_MODE_PREFIX = prefix + "_mouse_tap_mode"
     val TAP_MODE_DEFAULT = true
 
+    val DYNAMIC_CROSSHAIR_PREFIX = prefix + "_dynamic_crosshair"
+    val DYNAMIC_CROSSHAIR_DEFAULT = true
+
     val GAMEPAD_CONFIG_KEY = prefix + "_gamepad_config"
 
 
@@ -63,6 +66,10 @@ abstract class EngineOptionsOpenJKBase(
         SwitchWidget(activity, binding.mouseTapModeSwitch.root, "Tap-to-position menu mouse",
             "Tap in-game menu items, turn off to drag cursor.",
             TAP_MODE_PREFIX, TAP_MODE_DEFAULT, R.drawable.setting_gear)
+
+        SwitchWidget(activity, binding.dynamicCrosshairSwitch.root, "Dynamic crosshair",
+            "Auto-aim for weapons (cg_dynamicCrosshair).",
+            DYNAMIC_CROSSHAIR_PREFIX, DYNAMIC_CROSSHAIR_DEFAULT, R.drawable.setting_gear)
 
         GamepadConfigWidget(activity, binding.gamepadConfigSpinner.root, GAMEPAD_CONFIG_KEY)
 
@@ -90,7 +97,8 @@ abstract class EngineOptionsOpenJKBase(
         info.glesVersion = 1
 
         val useOpenAL = if (SwitchWidget.fetchValue(AppInfo.getContext(), OPENAL_PREFIX, OPENAL_DEFAULT)) 1 else 0
-        info.args = " +set r_mode -1 +set r_customwidth \$W +set r_customheight \$H +set s_UseOpenAL $useOpenAL "
+        val dynamicCrosshair = if (SwitchWidget.fetchValue(AppInfo.getContext(), DYNAMIC_CROSSHAIR_PREFIX, DYNAMIC_CROSSHAIR_DEFAULT)) 1 else 0
+        info.args = " +set r_mode -1 +set r_customwidth \$W +set r_customheight \$H +set s_UseOpenAL $useOpenAL +set cg_dynamicCrosshair $dynamicCrosshair  "
 
         info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
         info.gamepadConfig = GamepadConfigWidget.fetchValue(AppInfo.getContext(), GAMEPAD_CONFIG_KEY)

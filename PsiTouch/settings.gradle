@@ -45,7 +45,7 @@ include ':fluidsynth'
 project(':fluidsynth').projectDir = new File(settingsDir, "/psitouch/src/main/jni/AudioLibs_OpenTouch/fluidsynth")
 
 include ':TheForceEngine'
-project(':TheForceEngine').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Alpha/TheForceEngine")
+project(':TheForceEngine').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Games/TheForceEngine")
 
 include ':OpenJK'
-project(':OpenJK').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Alpha/OpenJK")
+project(':OpenJK').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Games/OpenJK")
