@@ -7,5 +7,7 @@ class OpenJKMPLauncher : OpenJKBaseLauncher(
         displayName = "JA : Multiplayer",
         assetFiles = arrayOf("base/assets0.pk3", "base/assets1.pk3", "base/assets2.pk3", "base/assets3.pk3"),
         copyInstructions = "Copy assets0.pk3, assets1.pk3, assets2.pk3, assets3.pk3 to: ",
-        placeholderFile = "Put your Jedi Academy assets pk3 files here.txt"
+        placeholderFile = "Put your Jedi Academy assets pk3 files here.txt",
+        // MP can also run from the SP "JA" folder to share the same Jedi Academy assets.
+        selectableFolders = arrayOf("JAMP", "JA")
 )

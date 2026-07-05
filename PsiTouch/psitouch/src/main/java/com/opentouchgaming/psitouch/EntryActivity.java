@@ -217,7 +217,7 @@ public class EntryActivity extends FragmentActivity
                            false);
 
 
-        AppInfo.website = "http://opentouchgaming.com";
+        AppInfo.website = "http://opentouchgaming.com/psi-touch/";
         AppInfo.showRateButton = false;
         AppInfo.versionCheckKey = "psi"; // non-null enables the online version check
 

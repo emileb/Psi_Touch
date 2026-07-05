@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="1.1" changeDate="5 July 2026">
+        <changelogtext>Added custom resolutions + maintain aspect to OpenJK</changelogtext>
+        <changelogtext>Added Run toggle to TFE</changelogtext>
+        <changelogtext>Added option to use 'JA' or 'JAMP' folder for JA Multiplayer</changelogtext>
+        <changelogtext>Fixed TFE inventory icons</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.0" changeDate="29 June 2026">
         <changelogtext>Added cg_dynamicCrosshair option for OpenJK</changelogtext>
         <changelogtext>Added version checking</changelogtext>

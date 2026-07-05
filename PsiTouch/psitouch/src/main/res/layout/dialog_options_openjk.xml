@@ -16,6 +16,10 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/gl_resolution"
+            layout="@layout/widget_view_resolution_select" />
+
+        <include
             android:id="@+id/openal_switch"
             layout="@layout/widget_view_switch" />
 

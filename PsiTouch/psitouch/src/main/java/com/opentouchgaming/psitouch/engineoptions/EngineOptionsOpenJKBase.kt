@@ -14,6 +14,7 @@ import com.opentouchgaming.androidcore.GameEngine
 import com.opentouchgaming.androidcore.ui.widgets.AudioOverrideWidget
 import com.opentouchgaming.androidcore.ui.widgets.DeleteDataWidget
 import com.opentouchgaming.androidcore.ui.widgets.GamepadConfigWidget
+import com.opentouchgaming.androidcore.ui.widgets.ResolutionOptionsWidget
 import com.opentouchgaming.androidcore.ui.widgets.SwitchWidget
 import com.opentouchgaming.psitouch.databinding.DialogOptionsOpenjkBinding
 
@@ -33,6 +34,8 @@ abstract class EngineOptionsOpenJKBase(
     lateinit var binding: DialogOptionsOpenjkBinding
 
     lateinit var dialog: Dialog
+
+    lateinit var resolutionOptionsWidget: ResolutionOptionsWidget
 
     val audioOverride = AudioOverrideWidget(prefix + "_")
 
@@ -58,6 +61,9 @@ abstract class EngineOptionsOpenJKBase(
         dialog.setContentView(binding.root)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
+
+        // Render resolution / framebuffer scaler. Uses this engine's prefix so each keeps its own choice.
+        resolutionOptionsWidget = ResolutionOptionsWidget(activity, binding.glResolution.root, prefix)
 
         SwitchWidget(activity, binding.openalSwitch.root, "Use OpenAL audio",
             "Use the OpenAL sound backend (positional/EAX audio) instead of the default software mixer.",
@@ -88,6 +94,8 @@ abstract class EngineOptionsOpenJKBase(
             arrayOf<String>("")
         )
 
+        dialog.setOnDismissListener { resolutionOptionsWidget.save() }
+
         dialog.show()
     }
 
@@ -98,7 +106,14 @@ abstract class EngineOptionsOpenJKBase(
 
         val useOpenAL = if (SwitchWidget.fetchValue(AppInfo.getContext(), OPENAL_PREFIX, OPENAL_DEFAULT)) 1 else 0
         val dynamicCrosshair = if (SwitchWidget.fetchValue(AppInfo.getContext(), DYNAMIC_CROSSHAIR_PREFIX, DYNAMIC_CROSSHAIR_DEFAULT)) 1 else 0
-        info.args = " +set r_mode -1 +set r_customwidth \$W +set r_customheight \$H +set s_UseOpenAL $useOpenAL +set cg_dynamicCrosshair $dynamicCrosshair  "
+
+        // Render the engine at the selected resolution and let the native framebuffer scaler blit it to the screen.
+        val res = ResolutionOptionsWidget.getResOption(prefix)
+        info.frameBufferWidth = res.w
+        info.frameBufferHeight = res.h
+        info.maintainAspect = res.maintainAspect
+
+        info.args = " +set r_mode -1 +set r_customwidth ${res.w} +set r_customheight ${res.h} +set s_UseOpenAL $useOpenAL +set cg_dynamicCrosshair $dynamicCrosshair  "
 
         info.mouseTapMode = SwitchWidget.fetchValue(AppInfo.getContext(), TAP_MODE_PREFIX, TAP_MODE_DEFAULT)
         info.gamepadConfig = GamepadConfigWidget.fetchValue(AppInfo.getContext(), GAMEPAD_CONFIG_KEY)

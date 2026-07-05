@@ -11,6 +11,9 @@ Psi Touch is an Android app that ports PC games to touch devices. It ships two n
 - **Languages:** Java + Kotlin (app), C/C++ (engines and native libs)
 - **NDK:** 24.0.8215888 · **CMake:** 4.1.2 · ABIs: `armeabi-v7a`, `arm64-v8a`
 
+## Other Example apps
+There are other apps located here, Delta Touch and Quad Touch. These have good examples of other features and ways of doing things. Look here if asked to look at examples in Quad Touch or Delta Touch: /Users/emilebelanger/Android/AndroidStudioProjects/OpenTouch
+
 ## Repository Layout
 
 This Git repo is a multi-submodule super-project. The Gradle project root is `PsiTouch/` (not the repo root).
