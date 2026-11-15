@@ -74,9 +74,23 @@ class TFELauncher : GameLauncherInterface
         return args
     }
 
+    // Called once tfe.zip has finished extracting, to continue the launch.
+    var onExtracted: Runnable? = null
+
     override fun checkForDownloads(activity: Activity, engine: GameEngine, subGame: SubGame): Boolean
     {
-        ZipUtils.extractAsset(activity, "tfe.zip", runDirectory,2000000);
-        return false
+        // Re-extract only after an install/update; the engine must not start before it's done.
+        val stamp = activity.packageManager.getPackageInfo(activity.packageName, 0).lastUpdateTime.toString()
+        val marker = File(runDirectory, ".tfe_zip_extracted")
+
+        if (marker.exists() && marker.readText() == stamp)
+            return false
+
+        File(runDirectory).mkdirs()
+        val started = ZipUtils.extractAsset(activity, "tfe.zip", runDirectory, 8157766) {
+            marker.writeText(stamp)
+            onExtracted?.run()
+        }
+        return started
     }
 }

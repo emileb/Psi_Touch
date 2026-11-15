@@ -22,3 +22,6 @@
 [submodule "PsiTouch/psitouch/src/main/jni/Games/TheForceEngine/src/main/jni/TheForceEngine"]
 	path = PsiTouch/psitouch/src/main/jni/Games/TheForceEngine/src/main/jni/TheForceEngine
 	url = https://github.com/luciusDXL/TheForceEngine.git
+[submodule "PsiTouch/psitouch/src/main/jni/Games/OpenJKDF2/src/main/jni/OpenJKDF2"]
+	path = PsiTouch/psitouch/src/main/jni/Games/OpenJKDF2/src/main/jni/OpenJKDF2
+	url = https://github.com/shinyquagsire23/OpenJKDF2.git

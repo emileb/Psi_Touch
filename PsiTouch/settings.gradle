@@ -49,3 +49,6 @@ project(':TheForceEngine').projectDir = new File(settingsDir, "/psitouch/src/mai
 
 include ':OpenJK'
 project(':OpenJK').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Games/OpenJK")
+
+include ':OpenJKDF2'
+project(':OpenJKDF2').projectDir = new File(settingsDir, "/psitouch/src/main/jni/Games/OpenJKDF2")

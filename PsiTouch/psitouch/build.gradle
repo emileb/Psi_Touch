@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    ndkVersion '24.0.8215888'
+    ndkVersion versions.ndk_version
     namespace 'com.opentouchgaming.psitouch'
 
     compileSdk {
@@ -13,7 +13,7 @@ android {
     viewBinding.enabled true
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 35
         versionCode 27
         versionName "1.1"
@@ -74,6 +74,7 @@ dependencies {
 
     implementation(project(":TheForceEngine"))
     implementation(project(":OpenJK"))
+    implementation(project(":OpenJKDF2"))
 
 
     implementation 'net.lingala.zip4j:zip4j:2.11.5'

@@ -1,18 +1,15 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository. Guidance shared by all the OpenTouch apps (architecture, native build model, conventions, the engine porting guide) is in the parent `../CLAUDE.md`, which loads automatically.
 
 ## Project Overview
 
-Psi Touch is an Android app that ports PC games to touch devices. It ships two native engine code-bases — **TheForceEngine** (labelled "IORTCW") and **OpenJK** — launched through the shared OpenTouch infrastructure. OpenJK is exposed as three engine entries: **OpenJK** (Jedi Academy single-player), **OpenJO** (Jedi Outcast single-player), and **OpenJK MP** (Jedi Academy multiplayer / `codemp`). The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
+Psi Touch is an Android app that ports PC games to touch devices. It ships three native engine code-bases — **TheForceEngine** (labelled "IORTCW"), **OpenJK** and **OpenJKDF2** — launched through the shared OpenTouch infrastructure. OpenJK is exposed as three engine entries: **OpenJK** (Jedi Academy single-player), **OpenJO** (Jedi Outcast single-player), and **OpenJK MP** (Jedi Academy multiplayer / `codemp`). **OpenJKDF2** (Jedi Knight: Dark Forces II) is the newest and is SDL3 + arm64-only; see [`docs/engines/openjkdf2.md`](docs/engines/openjkdf2.md) before touching it. The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
 
 - **App module namespace:** `com.opentouchgaming.psitouch`
-- **Min SDK:** 19 (Android 4.4) · **Target/Compile SDK:** 35
+- **Min SDK:** 21 (Android 5.0; the NDK 27 native floor) · **Target/Compile SDK:** 35
 - **Languages:** Java + Kotlin (app), C/C++ (engines and native libs)
-- **NDK:** 24.0.8215888 · **CMake:** 4.1.2 · ABIs: `armeabi-v7a`, `arm64-v8a`
-
-## Other Example apps
-There are other apps located here, Delta Touch and Quad Touch. These have good examples of other features and ways of doing things. Look here if asked to look at examples in Quad Touch or Delta Touch: /Users/emilebelanger/Android/AndroidStudioProjects/OpenTouch
+- **NDK:** 27.3.13750724 · **CMake:** 4.1.2 · ABIs: `armeabi-v7a`, `arm64-v8a`
 
 ## Repository Layout
 
@@ -23,7 +20,8 @@ This Git repo is a multi-submodule super-project. The Gradle project root is `Ps
 - `AndroidCore_OpenTouch/` — submodule providing the `:androidcore` and `:changeloglib` library modules. **Most shared behavior lives here; see its own `CLAUDE.md`.**
 - `SAFFAL/` — submodule providing `:saffal` (scoped-storage file abstraction).
 - `PsiTouch/psitouch/src/main/jni/` — native sources, mostly submodules (`SDL2_OpenTouch`, `Clibs_OpenTouch`, `MobileTouchControls`, `gl4es`, `AudioLibs_OpenTouch`).
-- `PsiTouch/psitouch/src/main/jni/Games/{TheForceEngine,OpenJK}/` — each game engine wrapped as its own Gradle library module (`:TheForceEngine`, `:OpenJK`) built via CMake.
+- `PsiTouch/psitouch/src/main/jni/Games/{TheForceEngine,OpenJK,OpenJKDF2}/` — each game engine wrapped as its own Gradle library module (`:TheForceEngine`, `:OpenJK`, `:OpenJKDF2`) built via CMake.
+- `docs/engines/` — per-engine notes (currently only OpenJKDF2); the generic porting guide is shared in `../docs/porting/`.
 - `SAFFAL/` (the top-level dir) appears to be a stale/unrelated checkout; the active SAFFAL used by the build is the `SAFFAL/` submodule referenced from `PsiTouch/settings.gradle`.
 
 After cloning, initialize submodules: `git submodule update --init --recursive`.
@@ -46,12 +44,14 @@ There are no unit/instrumentation tests in this project (a test runner is config
 
 The native build is split into two mechanisms:
 
-1. **Prebuilt shared libs via ndk-build.** `src/main/jni/Android.mk` builds SDL2, touchcontrols, gl4es, audio libs, SAFFAL, etc. into `src/main/libs/<abi>/*.so`. These `.so` files are committed and consumed as `IMPORTED` libraries by the engine CMake builds. The app module's own `externalNativeBuild` points at `Android_dummy.mk` (empty) on purpose, so Gradle does **not** rebuild these automatically — rebuild them with `ndk-build` against `Android.mk` when the underlying submodules change.
-2. **Engine modules via CMake.** `:TheForceEngine` and `:OpenJK` each have a `build.gradle` + `CMakeLists.txt` that compile the engine and link against the prebuilt `.so`s in `src/main/libs/`. These DO build through Gradle. CMake links with `-Wl,--no-undefined`, so missing symbols fail the build.
+1. **Prebuilt shared libs via ndk-build.** `src/main/jni/Android.mk` builds SDL2, SDL3 (`SDL3_ENABLED=1`, for OpenJKDF2), touchcontrols, gl4es, audio libs, SAFFAL, etc. into `src/main/libs/<abi>/*.so`. These `.so` files are committed and consumed as `IMPORTED` libraries by the engine CMake builds. The app module's own `externalNativeBuild` points at `Android_dummy.mk` (empty) on purpose, so Gradle does **not** rebuild these automatically — rebuild them with `ndk-build` against `Android.mk` when the underlying submodules change.
+2. **Engine modules via CMake.** `:TheForceEngine`, `:OpenJK` and `:OpenJKDF2` each have a `build.gradle` + `CMakeLists.txt` that compile the engine and link against the prebuilt `.so`s in `src/main/libs/`. These DO build through Gradle. CMake links with `-Wl,--no-undefined`, so missing symbols fail the build.
 
 `:OpenJK` builds the whole OpenJK tree (added via the Alpha-wrapper `CMakeLists.txt` → upstream `src/main/jni/OpenJK/CMakeLists.txt`). On Android it produces the SP engines `libopenjk_sp.so` (JKA) and `libopenjo_sp.so` (JO) with their `libjagame.so`/`libjospgame.so`, **plus the MP client**: `libopenjk.so` (engine, statically includes the `rd-vanilla` renderer build target `librd-vanilla.so`) and the dynamically-loaded VM modules `libjampgame.so` / `libcgame.so` / `libui.so`. The MP dedicated server and rend2 renderer are not built. The renderers target **OpenGL ES 1.x** via `-DUSE_GLES1` (a fixed-function `rd-vanilla` port); engine + renderer link `GLESv1_CM EGL`. All these `.so` keep their `lib` prefix so they package into the APK, and the engine loads the renderer / VM modules by `lib<name>.so` from the app's native-lib dir (see the `__ANDROID__` branches in `shared/sys/sys_main.cpp` `Sys_LoadGameDll` and `codemp/client/cl_main.cpp`).
 
-Shared native flags, SDK versions, and ABI filters are defined once in `PsiTouch/build.gradle` (`ext.versions`, `ext.build_flags`, `ext.abi_filters`) and consumed by every native module.
+Shared native flags, SDK versions, and ABI filters are defined once in `PsiTouch/build.gradle` (`ext.versions`, `ext.build_flags`, `ext.abi_filters`) and consumed by every native module. `:OpenJKDF2` is the exception: arm64-only, no LTO (see its `build.gradle`).
+
+`:OpenJKDF2` builds `libopenjkdf2.so` from the engine's own `CMakeLists.txt` with `-DPLAT_ANDROID_OPENTOUCH=ON`, a platform added for this app (`cmake_modules/plat_android_opentouch.cmake`) that consumes prebuilt SDL3 / OpenAL instead of the engine's ExternalProject builds. It needs `python3` on the host (cogapp-generated globals).
 
 ## Architecture
 
@@ -73,7 +73,7 @@ Each engine needs three pieces wired together:
 
 ### Launch flow
 
-`PsiFragment.launchGame()` assembles args from `engine.args` + `RunInfo.args` + user args, builds an `Intent` for `org.libsdl.app2012.SDLActivity` (in `:androidcore`) carrying `load_libs`, `game_path`, `args`, etc., then `LaunchIntent.populateIntent(...)` adds audio/control/quick-command extras before `startActivity`.
+`PsiFragment.launchGame()` assembles args from `engine.args` + `RunInfo.args` + user args, builds an `Intent` for `org.libsdl.app2012.SDLActivity` (SDL2) or `org.libsdl.app3000.SDLActivity` (SDL3, chosen by `RunInfo.sdlVersion == 3` — OpenJKDF2) in `:androidcore`, carrying `load_libs`, `game_path`, `args`, etc., then `LaunchIntent.populateIntent(...)` adds audio/control/quick-command extras before `startActivity`.
 
 ### Native touch / JNI glue (per engine)
 
@@ -81,6 +81,7 @@ The on-screen touch UI and JNI bridge are shared C/C++ in `Clibs_OpenTouch`, but
 
 - `Games/TheForceEngine/.../TheForceEngine/mobile/` — `game_interface.cpp` (TFE `Portable*` impl), `touch_interface_tfe.cpp`, and the engine's copy of `touch_interface.h`.
 - `Games/OpenJK/.../OpenJK/mobile/` — a **single shared** `game_interface.cpp` and `touch_interface_openjk.cpp` (+ `touch_interface.h`) compiled into **both** the SP (`code/`) and MP (`codemp/`) targets, referenced as `${PROG_SOURCE_DIR}/mobile/...`.
+- `Games/OpenJKDF2/.../OpenJKDF2/mobile/` — `game_interface.cpp`, `touch_interface_openjkdf2.cpp`, `touch_interface.h`; wired from `cmake_modules/plat_android_opentouch.cmake`.
 
 Engine-agnostic pieces stay in `Clibs_OpenTouch`: the JNI bridge `android_jni_inc.cpp` (holds the global `TouchInterface touchInterface`), its thin wrapper `psi/android_jni.cpp` (just `#include "../android_jni_inc.cpp"`, compiled per engine), `touch_interface_base.{cpp,h}`, and the `Portable*` API surface `game_interface.h`.
 
@@ -94,13 +95,10 @@ Uses the OpenTouch storage model: legacy path `/OpenTouch/Psi/` plus Android R+ 
 
 ## Conventions & Gotchas
 
-- **Comments: keep them simple and concise.** Prefer a single short line explaining the *why*; do not write multi-line verbose explanations in the code. Save the deeper rationale for commit messages / PRs, not the source.
-- **ViewBinding is enabled** (`viewBinding true`); engine option dialogs inflate generated `*Binding` classes from layouts in `res/layout/dialog_options_*.xml`. The binding name derives from the layout file name.
-- **Glide is pinned to 4.16.0** and `constraintlayout` to `1.1.3` / `recyclerview` to `1.3.2` for Nvidia Shield TV + API 19 compatibility — do not upgrade without testing on those targets (see `:androidcore` `CLAUDE.md`).
-- Native `.so` outputs in `src/main/libs/` are build artifacts that are committed; if you change a native submodule, regenerate them via ndk-build rather than expecting Gradle to.
-- The Gradle configuration cache is enabled (`org.gradle.configuration-cache=true`).
+Shared conventions (comments, ViewBinding, pinned dependencies) are in `../CLAUDE.md`. App-specific:
+
 - Profiling: see `src/main/jni/INFO.txt` for the simpleperf `app_profiler.py` invocation.
 - **CMake `option()` caching:** `option(...)` only seeds its default on the first configure, then pins the value in the per-module `.cxx/.../CMakeCache.txt`. Changing a default later (e.g. the `BuildMP*` toggles) does nothing for an already-configured tree. The OpenJK top-level `CMakeLists.txt` therefore force-enables the MP client targets on Android with normal (non-cache) `set()` after the `option()` calls, which shadow the cached values on every configure — no cache wipe needed.
 - **OpenJK MP audio:** the MP client currently uses the SDL software mixer; `USE_OPENAL` is left off on Android (the SP `USE_OPENAL`/`USE_OPENAL_EAX` split was not ported to `codemp/client/snd_dma.cpp`). MP also has no separate `EngineOptionsInterface` yet — it reuses `EngineOptionsOpenJK`. Run dir / sub-game folder is `JKMP` (`OpenJKMPLauncher.kt`).
-- **`ENGINE_NAME` per target:** `touch_interface_*.cpp` builds its touch-settings XML filenames (`game_<ENGINE_NAME>.xml`, etc.) from the `ENGINE_NAME` string literal, set per-source in each target's CMake. TFE is `"theforceengine"`, OpenJK SP is `"openjk"`, OpenJK **MP is `"openjkmp"`** — so MP keeps its own set of touch-control layout files separate from SP (fresh defaults on first run).
+- **`ENGINE_NAME` per target:** `touch_interface_*.cpp` builds its touch-settings XML filenames (`game_<ENGINE_NAME>.xml`, etc.) from the `ENGINE_NAME` string literal, set per-source in each target's CMake. TFE is `"theforceengine"`, OpenJK SP is `"openjk"`, OpenJKDF2 is `"openjkdf2"`, OpenJK **MP is `"openjkmp"`** — so MP keeps its own set of touch-control layout files separate from SP (fresh defaults on first run).
 - **TFE tap-to-position mouse:** in the DarkForces in-game menus (agent / briefing / escape / PDA) the on-screen mouse teleports to the tapped point and the engine hides its own cursor; the ImGui frontend keeps relative drag (small widgets). Toggle with `PortableSetMouseTapMode()` / `PortableGetMouseTapMode()`; `PortableInGameMenu()` distinguishes the DF menus (both report `TS_MENU`) and returns the pillarbox X offset for the centred 4:3 menus. The engine-side cursor-hide hook (`menu_setCursorHidden` in `TFE_DarkForces/GameUI/menu.cpp` + `escapeMenu.cpp`) is guarded by `__ANDROID__` so desktop TFE is byte-for-byte unchanged.

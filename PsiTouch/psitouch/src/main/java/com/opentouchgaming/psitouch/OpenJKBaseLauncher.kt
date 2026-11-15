@@ -34,9 +34,17 @@ abstract class OpenJKBaseLauncher(
 
     private val settingKey = "openjk_selected_folder_$subDir"
 
+    private var folderCache: String? = null
+
     // The folder currently run from. Defaults to subDir, or a saved selectable folder if valid.
-    private var currentFolder: String = AppSettings.getStringOption(AppInfo.getContext(), settingKey, subDir)
-            .takeIf { selectableFolders?.contains(it) == true } ?: subDir
+    // Read lazily: on process restore the fragment is created before AppInfo has its context.
+    private var currentFolder: String
+        get() = folderCache ?: (AppSettings.getStringOption(AppInfo.getContext(), settingKey, subDir)
+                .takeIf { selectableFolders?.contains(it) == true } ?: subDir).also { folderCache = it }
+        set(value)
+        {
+            folderCache = value
+        }
 
     override fun updateSubGames(engine: GameEngine, availableSubGames: ArrayList<SubGame>)
     {

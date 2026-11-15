@@ -2,8 +2,12 @@ package com.opentouchgaming.psitouch;
 
 import static com.opentouchgaming.androidcore.DebugLog.Level.D;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+
+import java.util.Arrays;
 
 import androidx.core.util.Pair;
 
@@ -34,6 +38,8 @@ public class PsiFragment extends MainFragment
 
     OpenJOLauncher openjoLauncher;
 
+    OpenJKDF2Launcher openjkdf2Launcher;
+
     public PsiFragment()
     {
         super();
@@ -54,6 +60,8 @@ public class PsiFragment extends MainFragment
         openjkmpLauncher = new OpenJKMPLauncher();
 
         openjoLauncher = new OpenJOLauncher();
+
+        openjkdf2Launcher = new OpenJKDF2Launcher();
     }
 
     public void setLauncher()
@@ -72,12 +80,26 @@ public class PsiFragment extends MainFragment
             case OPENJO:
                 launcher = openjoLauncher;
                 break;
+            case OPENJKDF2:
+                launcher = openjkdf2Launcher;
+                break;
         }
     }
 
 
     public void launchGame(final GameEngine engine, boolean download, final String multiplayerArgs)
     {
+        // OpenJKDF2 is built for arm64 only; say so before the user copies data or the native load fails.
+        if (engine.engine == GameEngine.Engine.OPENJKDF2 && !Arrays.asList(Build.SUPPORTED_64_BIT_ABIS).contains("arm64-v8a"))
+        {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(engine.title)
+                    .setMessage("This engine needs a 64-bit (arm64) device. It can not run on this device.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
         final String rootPath = launcher.getRunDirectory(selectedSubGame);
 
         // Check if not installed yet
@@ -89,6 +111,8 @@ public class PsiFragment extends MainFragment
         // Check for engine specific downloads or issues
         if (download)
         {
+            tfeLauncher.setOnExtracted(() -> launchGame(engine, false, multiplayerArgs));
+
             if (launcher.checkForDownloads(getActivity(), AppInfo.currentEngine, selectedSubGame))
                 return;
         }
@@ -103,8 +127,18 @@ public class PsiFragment extends MainFragment
         args += runInfo.args + " ";
         args += argsFinal;
 
-        // Create Intent
-        Intent intent = new Intent(getActivity(), org.libsdl.app2012.SDLActivity.class);
+        // Create Intent. OpenJKDF2 is an SDL3 engine (app3000); TFE / OpenJK are SDL2.
+        Intent intent;
+
+        if (runInfo.sdlVersion == 3)
+        {
+            intent = new Intent(getActivity(), org.libsdl.app3000.SDLActivity.class);
+        }
+        else
+        {
+            intent = new Intent(getActivity(), org.libsdl.app2012.SDLActivity.class);
+        }
+
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 

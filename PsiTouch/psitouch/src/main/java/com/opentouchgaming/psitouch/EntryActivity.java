@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJK;
+import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJKDF2;
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJKMP;
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsOpenJO;
 import com.opentouchgaming.psitouch.engineoptions.EngineOptionsTFE;
@@ -149,7 +150,24 @@ public class EntryActivity extends FragmentActivity
                                0,
                            0x00C40307,
                                0,
-                               EngineOptionsOpenJKMP.class),};
+                               EngineOptionsOpenJKMP.class),
+
+                new GameEngine(GameEngine.Engine.OPENJKDF2,
+                               0,
+                               "Jedi Knight",
+                               "openjkdf2",
+                               "",
+                               new String[]{"dev"},
+                               // arm64-only, SDL3 (app3000). libopenal-soft.so is a DT_NEEDED of
+                               // libopenjkdf2.so so the linker pulls it in itself.
+                               new String[][]{{"touchcontrols", "z", "openjkdf2"}},
+                               "",
+                               GamepadDefinitions.getDefinition(AppInfo.Apps.PSI_TOUCH),
+                               R.drawable.jkdf2_icon,
+                               0,
+                               0x00A0522D,
+                               0,
+                               EngineOptionsOpenJKDF2.class),};
 
         List<StorageConfigDialog.StorageExamples> examples = new ArrayList<>();
         examples.add(new StorageConfigDialog.StorageExamples("User files", "(config, saves etc):", StorageConfigDialog.PathLocation.PRIM, "/user_files"));
@@ -173,6 +191,7 @@ public class EntryActivity extends FragmentActivity
                 new UserFilesDialog.UserFileEntryDescription("Jedi Academy", "", R.drawable.jk_icon, "ja"),
                 new UserFilesDialog.UserFileEntryDescription("Jedi Outcast", "", R.drawable.jo_icon, "jo"),
                 new UserFilesDialog.UserFileEntryDescription("Jedi Academy MP", "", R.drawable.jk_icon, "jamp"),
+                new UserFilesDialog.UserFileEntryDescription("Jedi Knight (DF2)", "", R.drawable.jkdf2_icon, "openjkdf2"),
 
                 new UserFilesDialog.UserFileEntryDescription("Mod setups", "", R.drawable.ic_baseline_file_copy, "loadouts"),
                 new UserFilesDialog.UserFileEntryDescription("Gamepad setups", "", R.drawable.ic_baseline_file_copy, "gamepad"),
@@ -187,6 +206,11 @@ public class EntryActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // Before super.onCreate: a restored PsiFragment is built there, and its tool buttons pick "Other apps" from website.
+        AppInfo.website = "http://opentouchgaming.com/psi-touch/";
+        AppInfo.showRateButton = false;
+        AppInfo.versionCheckKey = "psi"; // non-null enables the online version check
+
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -216,10 +240,6 @@ public class EntryActivity extends FragmentActivity
                            true,
                            false);
 
-
-        AppInfo.website = "http://opentouchgaming.com/psi-touch/";
-        AppInfo.showRateButton = false;
-        AppInfo.versionCheckKey = "psi"; // non-null enables the online version check
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
