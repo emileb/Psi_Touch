@@ -4,7 +4,6 @@ BUILD WITH: ~/Library/Android/sdk/ndk/25.2.9519653/ndk-build -j20
 * OpenJK crouch toggles
 * TFE: Fixed the game sometimes quitting or showing errors on the first start after installing or updating
 * OpenJK: Fixed a column of garbage pixels at the right edge at some resolutions
-* Jedi Knight: Shows a message on 32-bit devices instead of crashing
 * OpenJK: Fixed crash when loading a level at reduced resolution on PowerVR devices
 * TFE: Fixed black screen after leaving and returning to the game on PowerVR devices
 * TFE: Forcing GLES 2.0 no longer resets the renderer setting to Software

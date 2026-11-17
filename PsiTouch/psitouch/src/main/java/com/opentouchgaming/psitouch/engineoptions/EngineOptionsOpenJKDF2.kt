@@ -78,6 +78,9 @@ class EngineOptionsOpenJKDF2 : EngineOptionsInterface
         info.frameBufferWidth = res.w
         info.frameBufferHeight = res.h
         info.maintainAspect = res.maintainAspect
+        // The engine never renders below 640x480 (jkMain/stdDisplay clamp); Screen / 2 on a 720p phone is 360 high.
+        info.frameBufferMinWidth = 640
+        info.frameBufferMinHeight = 480
 
         // Must be non-null: PsiFragment concatenates runInfo.args into the command
         // line, and a null here becomes the literal string "null".

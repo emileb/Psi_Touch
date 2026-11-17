@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Psi Touch is an Android app that ports PC games to touch devices. It ships three native engine code-bases — **TheForceEngine** (labelled "IORTCW"), **OpenJK** and **OpenJKDF2** — launched through the shared OpenTouch infrastructure. OpenJK is exposed as three engine entries: **OpenJK** (Jedi Academy single-player), **OpenJO** (Jedi Outcast single-player), and **OpenJK MP** (Jedi Academy multiplayer / `codemp`). **OpenJKDF2** (Jedi Knight: Dark Forces II) is the newest and is SDL3 + arm64-only; see [`docs/engines/openjkdf2.md`](docs/engines/openjkdf2.md) before touching it. The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
+Psi Touch is an Android app that ports PC games to touch devices. It ships three native engine code-bases — **TheForceEngine** (labelled "IORTCW"), **OpenJK** and **OpenJKDF2** — launched through the shared OpenTouch infrastructure. OpenJK is exposed as three engine entries: **OpenJK** (Jedi Academy single-player), **OpenJO** (Jedi Outcast single-player), and **OpenJK MP** (Jedi Academy multiplayer / `codemp`). **OpenJKDF2** (Jedi Knight: Dark Forces II) is the newest and is SDL3 (both ABIs since 2026-11-17); see [`docs/engines/openjkdf2.md`](docs/engines/openjkdf2.md) before touching it. The app itself is a thin host: nearly all UI, controls, storage, and SDL plumbing live in the `AndroidCore_OpenTouch` library submodule.
 
 - **App module namespace:** `com.opentouchgaming.psitouch`
 - **Min SDK:** 21 (Android 5.0; the NDK 27 native floor) · **Target/Compile SDK:** 35
@@ -49,7 +49,7 @@ The native build is split into two mechanisms:
 
 `:OpenJK` builds the whole OpenJK tree (added via the Alpha-wrapper `CMakeLists.txt` → upstream `src/main/jni/OpenJK/CMakeLists.txt`). On Android it produces the SP engines `libopenjk_sp.so` (JKA) and `libopenjo_sp.so` (JO) with their `libjagame.so`/`libjospgame.so`, **plus the MP client**: `libopenjk.so` (engine, statically includes the `rd-vanilla` renderer build target `librd-vanilla.so`) and the dynamically-loaded VM modules `libjampgame.so` / `libcgame.so` / `libui.so`. The MP dedicated server and rend2 renderer are not built. The renderers target **OpenGL ES 1.x** via `-DUSE_GLES1` (a fixed-function `rd-vanilla` port); engine + renderer link `GLESv1_CM EGL`. All these `.so` keep their `lib` prefix so they package into the APK, and the engine loads the renderer / VM modules by `lib<name>.so` from the app's native-lib dir (see the `__ANDROID__` branches in `shared/sys/sys_main.cpp` `Sys_LoadGameDll` and `codemp/client/cl_main.cpp`).
 
-Shared native flags, SDK versions, and ABI filters are defined once in `PsiTouch/build.gradle` (`ext.versions`, `ext.build_flags`, `ext.abi_filters`) and consumed by every native module. `:OpenJKDF2` is the exception: arm64-only, no LTO (see its `build.gradle`).
+Shared native flags, SDK versions, and ABI filters are defined once in `PsiTouch/build.gradle` (`ext.versions`, `ext.build_flags`, `ext.abi_filters`) and consumed by every native module. `:OpenJKDF2` is the exception: no LTO (see its `build.gradle`).
 
 `:OpenJKDF2` builds `libopenjkdf2.so` from the engine's own `CMakeLists.txt` with `-DPLAT_ANDROID_OPENTOUCH=ON`, a platform added for this app (`cmake_modules/plat_android_opentouch.cmake`) that consumes prebuilt SDL3 / OpenAL instead of the engine's ExternalProject builds. It needs `python3` on the host (cogapp-generated globals).
 
