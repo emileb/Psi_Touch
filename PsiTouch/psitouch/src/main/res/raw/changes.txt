@@ -7,6 +7,7 @@ BUILD WITH: ~/Library/Android/sdk/ndk/25.2.9519653/ndk-build -j20
 * Jedi Knight: Shows a message on 32-bit devices instead of crashing
 * OpenJK: Fixed crash when loading a level at reduced resolution on PowerVR devices
 * TFE: Fixed black screen after leaving and returning to the game on PowerVR devices
+* TFE: Forcing GLES 2.0 no longer resets the renderer setting to Software
 * Fixed the launcher sometimes crashing when returning from a game
 
 
