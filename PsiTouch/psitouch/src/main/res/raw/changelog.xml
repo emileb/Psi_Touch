@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
+    <changelogversion versionName="2.0" changeDate="18 November 2026">
+        <changelogtext>Added Jedi Knight: Dark Forces II</changelogtext>
+        <changelogtext>Added gamepad shift buttons: hold one for a second set of button bindings</changelogtext>
+        <changelogtext>Added 'Faster loading from storage folder' option to the launcher settings</changelogtext>
+        <changelogtext>Added Sigma Touch to the Other apps screen</changelogtext>
+        <changelogtext>TFE: Fixed the game sometimes quitting or showing errors on the first start after installing or updating</changelogtext>
+        <changelogtext>TFE: Fixed black screen after leaving and returning to the game on PowerVR devices</changelogtext>
+        <changelogtext>TFE: Forcing GLES 2.0 no longer resets the renderer setting to Software</changelogtext>
+        <changelogtext>Fixed the launcher sometimes crashing when returning from a game</changelogtext>
+        <changelogtext>Fixed gamepad settings sometimes not working when opened from in-game</changelogtext>
+        <changelogtext>Fixed oversized engine icons in the launcher</changelogtext>
+        <changelogtext>Improved reliability of games stored in the storage folder</changelogtext>
+        <changelogtext>Now requires Android 5.0 or newer</changelogtext>
+        <changelogtext>Updated to NDK 27</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="1.1" changeDate="5 July 2026">
         <changelogtext>Added custom resolutions + maintain aspect to OpenJK</changelogtext>
         <changelogtext>Added Run toggle to TFE</changelogtext>

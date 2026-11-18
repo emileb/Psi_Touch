@@ -21,7 +21,10 @@
 	url = https://github.com/emileb/SDL2_OpenTouch.git
 [submodule "PsiTouch/psitouch/src/main/jni/Games/TheForceEngine/src/main/jni/TheForceEngine"]
 	path = PsiTouch/psitouch/src/main/jni/Games/TheForceEngine/src/main/jni/TheForceEngine
-	url = https://github.com/luciusDXL/TheForceEngine.git
+	url = https://github.com/emileb/TheForceEngine.git
 [submodule "PsiTouch/psitouch/src/main/jni/Games/OpenJKDF2/src/main/jni/OpenJKDF2"]
 	path = PsiTouch/psitouch/src/main/jni/Games/OpenJKDF2/src/main/jni/OpenJKDF2
-	url = https://github.com/shinyquagsire23/OpenJKDF2.git
+	url = https://github.com/emileb/OpenJKDF2.git
+[submodule "PsiTouch/psitouch/src/main/jni/Games/OpenJK/src/main/jni/OpenJK"]
+	path = PsiTouch/psitouch/src/main/jni/Games/OpenJK/src/main/jni/OpenJK
+	url = https://github.com/emileb/OpenJK.git

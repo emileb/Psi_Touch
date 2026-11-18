@@ -1,13 +1,20 @@
 
 BUILD WITH: ~/Library/Android/sdk/ndk/25.2.9519653/ndk-build -j20
 
-* OpenJK crouch toggles
+v2.0
+* Added Jedi Knight: Dark Forces II
+* Added gamepad shift buttons: hold one for a second set of button bindings
+* Added 'Faster loading from storage folder' option to the launcher settings
+* Added Sigma Touch to the Other apps screen
 * TFE: Fixed the game sometimes quitting or showing errors on the first start after installing or updating
-* OpenJK: Fixed a column of garbage pixels at the right edge at some resolutions
-* OpenJK: Fixed crash when loading a level at reduced resolution on PowerVR devices
 * TFE: Fixed black screen after leaving and returning to the game on PowerVR devices
 * TFE: Forcing GLES 2.0 no longer resets the renderer setting to Software
 * Fixed the launcher sometimes crashing when returning from a game
+* Fixed gamepad settings sometimes not working when opened from in-game
+* Fixed oversized engine icons in the launcher
+* Improved reliability of games stored in the storage folder
+* Now requires Android 5.0 or newer
+* Updated to NDK 27
 
 
 v1.1
