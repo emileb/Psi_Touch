@@ -2,7 +2,7 @@
 
 Module `:OpenJKDF2`. Engine-specific detail for Psi Touch; see [`../../CLAUDE.md`](../../CLAUDE.md) for the project overview. The generic porting process is shared in [`docs/porting/`](../../../docs/porting/).
 
-The `:OpenJKDF2` module wraps **OpenJKDF2** (`shinyquagsire23/OpenJKDF2`, a C reimplementation of DF2/MoTS with its own GLES 3.0 renderer). Engine source at `Games/OpenJKDF2/src/main/jni/OpenJKDF2`, a submodule currently pointing at **upstream**; the Android work is on a local `android` branch and still needs a fork (`emileb/OpenJKDF2`) to be pushed to and `.gitmodules` retargeted.
+The `:OpenJKDF2` module wraps **OpenJKDF2** (`shinyquagsire23/OpenJKDF2`, a C reimplementation of DF2/MoTS with its own GLES 3.0 renderer). Engine source at `Games/OpenJKDF2/src/main/jni/OpenJKDF2`, a submodule pointing at the fork `emileb/OpenJKDF2`, branch `android` (since 2026-11-18; `shinyquagsire23/OpenJKDF2` is the `upstream` remote).
 
 Status: **Phase 1 (build + boot to menu) implemented; `libopenjkdf2.so` links cleanly (`-Wl,--no-undefined`) in a standalone NDK 27 CMake build, not yet built through Android Studio or verified on device.**
 
@@ -76,4 +76,4 @@ The fix is the app's shared framebuffer scaler (`ResolutionOptionsWidget`, `RunI
 - SDL3_mixer for music; drop `STDMCI_NULL`.
 - ~~Saves/config to `user_files/openjkdf2` and absolute-path data access for SAF storage.~~ Done 2026-11-15.
 - Resolution option (`Window_screenXSize/YSize` are JSON-config driven) → `ResolutionOptionsWidget`.
-- MoTS entry, OpenAL backend env (`ALSOFT_DRIVERS`), fork + retarget the submodule.
+- MoTS entry, OpenAL backend env (`ALSOFT_DRIVERS`). ~~Fork + retarget the submodule.~~ Done 2026-11-18.

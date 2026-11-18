@@ -9,6 +9,8 @@
         <changelogtext>TFE: Fixed the game sometimes quitting or showing errors on the first start after installing or updating</changelogtext>
         <changelogtext>TFE: Fixed black screen after leaving and returning to the game on PowerVR devices</changelogtext>
         <changelogtext>TFE: Forcing GLES 2.0 no longer resets the renderer setting to Software</changelogtext>
+        <changelogtext>OpenJK: Fixed a column of garbage pixels at the right edge at some resolutions</changelogtext>
+        <changelogtext>OpenJK: Fixed crash when loading a level at reduced resolution on PowerVR devices</changelogtext>
         <changelogtext>Fixed the launcher sometimes crashing when returning from a game</changelogtext>
         <changelogtext>Fixed gamepad settings sometimes not working when opened from in-game</changelogtext>
         <changelogtext>Fixed oversized engine icons in the launcher</changelogtext>

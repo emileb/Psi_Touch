@@ -26,6 +26,8 @@ This Git repo is a multi-submodule super-project. The Gradle project root is `Ps
 
 After cloning, initialize submodules: `git submodule update --init --recursive`.
 
+Engine submodules point at the `emileb` forks, on the branch that holds the Android work: TheForceEngine and OpenJK `master_mobile`, OpenJKDF2 `android` (its original project is the `upstream` remote). Push engine commits there, never upstream.
+
 ## Build Commands
 
 Run from `PsiTouch/`:
@@ -44,7 +46,7 @@ There are no unit/instrumentation tests in this project (a test runner is config
 
 The native build is split into two mechanisms:
 
-1. **Prebuilt shared libs via ndk-build.** `src/main/jni/Android.mk` builds SDL2, SDL3 (`SDL3_ENABLED=1`, for OpenJKDF2), touchcontrols, gl4es, audio libs, SAFFAL, etc. into `src/main/libs/<abi>/*.so`. These `.so` files are committed and consumed as `IMPORTED` libraries by the engine CMake builds. The app module's own `externalNativeBuild` points at `Android_dummy.mk` (empty) on purpose, so Gradle does **not** rebuild these automatically — rebuild them with `ndk-build` against `Android.mk` when the underlying submodules change.
+1. **Prebuilt shared libs via ndk-build.** `src/main/jni/Android.mk` builds SDL2, SDL3 (`SDL3_ENABLED=1`, for OpenJKDF2), touchcontrols, gl4es, audio libs, SAFFAL, etc. into `src/main/libs/<abi>/*.so`. These `.so` files are **not** in git (`src/main/libs/` is gitignored), so a fresh clone must ndk-build them first; they are consumed as `IMPORTED` libraries by the engine CMake builds. The app module's own `externalNativeBuild` points at `Android_dummy.mk` (empty) on purpose, so Gradle does **not** rebuild these automatically — rebuild them with `ndk-build` against `Android.mk` when the underlying submodules change.
 2. **Engine modules via CMake.** `:TheForceEngine`, `:OpenJK` and `:OpenJKDF2` each have a `build.gradle` + `CMakeLists.txt` that compile the engine and link against the prebuilt `.so`s in `src/main/libs/`. These DO build through Gradle. CMake links with `-Wl,--no-undefined`, so missing symbols fail the build.
 
 `:OpenJK` builds the whole OpenJK tree (added via the Alpha-wrapper `CMakeLists.txt` → upstream `src/main/jni/OpenJK/CMakeLists.txt`). On Android it produces the SP engines `libopenjk_sp.so` (JKA) and `libopenjo_sp.so` (JO) with their `libjagame.so`/`libjospgame.so`, **plus the MP client**: `libopenjk.so` (engine, statically includes the `rd-vanilla` renderer build target `librd-vanilla.so`) and the dynamically-loaded VM modules `libjampgame.so` / `libcgame.so` / `libui.so`. The MP dedicated server and rend2 renderer are not built. The renderers target **OpenGL ES 1.x** via `-DUSE_GLES1` (a fixed-function `rd-vanilla` port); engine + renderer link `GLESv1_CM EGL`. All these `.so` keep their `lib` prefix so they package into the APK, and the engine loads the renderer / VM modules by `lib<name>.so` from the app's native-lib dir (see the `__ANDROID__` branches in `shared/sys/sys_main.cpp` `Sys_LoadGameDll` and `codemp/client/cl_main.cpp`).
